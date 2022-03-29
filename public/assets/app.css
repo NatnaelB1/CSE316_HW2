@@ -185,9 +185,9 @@ input:focus {
 .paragraph_text {
   /* height: fit-content;*/
   /* width: inherit;  */
-  height: 1000px;
+  height: 900px;
   width: 99%;
-  border-style: hidden;
+  border-style: none;
   resize: none;
 }
 
@@ -258,6 +258,74 @@ button:hover {
   width: 100px;
   opacity: 0.9;
 }
+/**********************************************************************************/
+/**********************************************************************************/
+
+div.ReactTags__tags {
+  position: relative;
+}
+
+/* Styles for the input */
+div.ReactTags__tagInput {
+  width: 200px;
+  border-radius: 2px;
+  display: inline-block;
+}
+div.ReactTags__tagInput input.ReactTags__tagInputField,
+div.ReactTags__tagInput input.ReactTags__tagInputField:focus {
+  height: 31px;
+  margin: 0;
+  margin-left: 5px;
+  font-size: 12px;
+  width: 100%;
+  border: 1px solid #eee;
+  padding: 0 4px;
+}
+
+/* Styles for selected tags */
+div.ReactTags__selected span.ReactTags__tag {
+  border: 1px solid #ddd;
+  background: #eee;
+  font-size: 12px;
+  display: inline-block;
+  padding: 5px;
+  margin: 0 5px;
+  cursor: move;
+  border-radius: 2px;
+}
+div.ReactTags__selected a.ReactTags__remove {
+  color: #aaa;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+/* Styles for suggestions */
+div.ReactTags__suggestions {
+  position: absolute;
+}
+div.ReactTags__suggestions ul {
+  list-style-type: none;
+  box-shadow: 0.05em 0.01em 0.5em rgba(0, 0, 0, 0.2);
+  background: white;
+  width: 200px;
+}
+div.ReactTags__suggestions li {
+  border-bottom: 1px solid #ddd;
+  padding: 5px 10px;
+  margin: 0;
+}
+div.ReactTags__suggestions li mark {
+  text-decoration: underline;
+  background: none;
+  font-weight: 600;
+}
+div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
+  background: #b7cfe0;
+  cursor: pointer;
+}
+
+/**********************************************************************************/
+/**********************************************************************************/
 
 /* Float cancel and signup buttons and add an equal width */
 .cancelbtn {
@@ -314,7 +382,7 @@ button:hover {
 }
 
 .active {
-  background-color: rgb(87, 108, 155);
+  background-color: rgb(152, 172, 214);
 }
 
 /************************************************************************************/
@@ -359,5 +427,27 @@ button:hover {
     border-right-style: solid;
     border-width: thin;
     border-color: darkgray;
+  }
+}
+
+@media screen {
+  .mainn {
+    display: flex;
+    flex-direction: column;
+    border-style: none;
+    height: 100%;
+  }
+
+  .mainn2 {
+    flex: 5;
+  }
+  .Tag-area {
+    flex: 2;
+    /* height: 50px;
+    width: 100%; */
+    background-color: #ddd;
+    /* border-style: hidden; */
+    padding-top: 5px;
+    padding-bottom: 5px;
   }
 }

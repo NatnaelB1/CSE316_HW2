@@ -4,6 +4,7 @@ import PopupWindow from './components/popup';
 import SmallPopupWindow from './components/popup-small';
 
 import { useState, useLayoutEffect } from 'react';
+import { WithContext as ReactTags } from 'react-tag-input'
 
 function App() {
   const [buttonPopup, setButtonPopup] = useState(false);
@@ -29,13 +30,15 @@ function App() {
                                       {id: 2,  body: "CSE 316", lastModified: get_Date()} ]);
 
 
- 
+  const [tags, setTags] = useState([]);
+  
   const onAddNote = () => {
     
     const newNote = {
       id: Date.now(), 
       body: "",
       lastModified: get_Date(),
+      note_tag: []
     };
      
 
@@ -49,6 +52,7 @@ function App() {
   const getActiveNote = () => {
     return notes.find((note) => note.id === activeNote);
   }
+
 
   
 
@@ -88,11 +92,34 @@ function App() {
     return size;
   }
   
-  if (useWindowSize()[0] < 500 && buttonPopup === true){
+  if (useWindowSize()[0] <= 500 && buttonPopup === true){
       return (
         <SmallPopupWindow />
       );     
   } 
+
+
+  const handleDelete = i => {
+    setTags(tags.filter((tag, index) => index !== i));
+  };
+
+  const handleAddition = tag => {
+    setTags([...tags, tag]);
+  };
+
+  const handleDrag = (tag, currPos, newPos) => {
+    const newTags = tags.slice();
+
+    newTags.splice(currPos, 1);
+    newTags.splice(newPos, 0, tag);
+
+    // re-render
+    setTags(newTags);
+  };
+
+  const handleTagClick = index => {
+    console.log('The tag at index ' + index + ' was clicked');
+  };
   
 
 
@@ -114,6 +141,15 @@ function App() {
                   activeNote = {getActiveNote()}
                   onEditNote = {onEditNote}
                   get_Date = {get_Date}
+
+                  handleDelete={handleDelete}
+                  handleAddition={handleAddition}
+                  handleDrag={handleDrag}
+                  handleTagClick={handleTagClick}
+                  tags ={tags}
+                  
+                  
+                  
                   
         />
         

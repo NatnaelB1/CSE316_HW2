@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
+import { WithContext as ReactTags } from 'react-tag-input'
 
 
-function MainArea ({notes, onDeleteNote, activeNote, setActiveNote, onEditNote, get_Date }){
+function MainArea ({notes, onDeleteNote, activeNote, setActiveNote, onEditNote, get_Date, handleDelete, handleAddition, handleDrag,
+                    handleTagClick, onTagUpdate, tags   }){
     
     const onUpdateNotes = (value) => {
         onEditNote({
             ... activeNote,
             body: value,
             lastModified: get_Date(),
+            note_tag: [tags]
         });
 
 
@@ -23,11 +26,42 @@ function MainArea ({notes, onDeleteNote, activeNote, setActiveNote, onEditNote, 
                 <button className="material-button" id="delete-icon" onClick={() => onDeleteNote(activeNote.id)}><span className="material-icons">delete_outline</span></button> 
             </div>
 
-            <div>
-                <textarea className="paragraph_text" value = {activeNote.body} onChange={(e) => onUpdateNotes(e.target.value) }> 
-                  
-                </textarea>
+            <div className='mainn'>
+
+                <div className='mainn2'>
+                    <textarea className="paragraph_text" value = {activeNote.body} onChange={(e) => onUpdateNotes(e.target.value) }> 
+                    
+                    </textarea>
+                </div>
+                
+                <div className='Tag-area'>
+                
+                    <ReactTags
+                    handleDelete={handleDelete}
+                    handleAddition={handleAddition}
+                    handleDrag={handleDrag}
+                    handleTagClick={handleTagClick}
+                    placeholder="Enter a Tag ..."
+                    minQueryLength={2}
+                    maxLength={5}
+                    autofocus={false}
+                    allowDeleteFromEmptyInput={true}
+                    autocomplete={true}
+                    readOnly={false}
+                    allowUnique={true}
+                    allowDragDrop={true}
+                    inline={true}
+                    allowAdditionFromPaste={true}
+                    editable={true}
+                    clearAll={false}
+                    tags={tags}
+                />
+                    
+                    
+                </div>
+
             </div>
+            
             
             
 
