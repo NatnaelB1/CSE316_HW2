@@ -1,0 +1,370 @@
+/* Global CSS Variables: https://www.w3schools.com/css/css3_variables.asp */
+/* Reference these in your CSS to get the same color as the mockups */
+:root {
+    --sidebar-width: 240px;
+    --text-color: rgb(50, 50, 50);
+    --background-color: #ffffff;
+    --light-background-color: #f4f4f4;
+    --nav-bar-color: #ffffff;
+    --selected-color: rgb(229, 241, 253);
+    --action-text-color: #ffffff;
+    --action-color: rgb(58, 99, 197);
+    --border-color: darkgray;
+}
+
+.background-window{
+  position: fixed;
+  background-color: darkgray;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity: 80%;
+  display: none;
+}
+
+p,h1,h2,h3,h4,h5,h6,span {
+ font-family: sans-serif;
+ 
+}
+body {
+ 	background-color: var(--background-color);
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+button, input[type=submit]  {
+    cursor: pointer;
+}
+
+textarea:focus, input:focus {
+    outline: none;
+}
+
+.image-button{
+  height: 35px;
+  width: 35px;
+  border-radius: 50%;
+  background-color: white;
+  border-style: none;
+  padding-left: 5px;
+  padding-top: 5px;
+  
+
+}
+
+.material-button{
+  height: 32px;
+  width: 41px;
+  background-color: white;
+  border-style: none;
+  padding-left: 5px;
+}
+#arrow-back{
+  display: none;
+}
+.title-notes{
+  padding-top: 10px;
+}
+.close{
+  border-radius: 50%;
+}
+.profile-image{
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  background-color: #fff;
+}
+.profile-bar{
+  height: 40px;
+  display: flex;
+  border-bottom-style: solid;
+  border-width: thin;
+  border-color: darkgray;
+  justify-content: space-between;
+}
+.note-bar{
+  height: 40px;
+  display: flex;
+  border-bottom-style: solid;
+  border-width: thin;
+  border-color: darkgray;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+.search{
+  display: flex;
+  height: 40px;
+  border-bottom-style: solid;
+  border-width: thin;
+  border-color: darkgray;
+  padding: 2px;
+
+}
+
+.search2{
+  
+  border-style: none;
+  padding-left: -10px;
+  /* width: 230px;
+  height: 20px; */
+}
+/* .search2-div{
+  
+  display: inline-flex;
+  border-style: none;
+  width: fit-content;
+  margin-bottom: 5px;
+  
+  
+} */
+.note-display{
+  height: 40px;
+  border-bottom-style: dotted;
+  border-width: thin;
+  border-color: darkgray;
+  padding: 2px;
+  
+}
+.note-display p{
+  margin: 0px;
+}
+.material-icons{
+  /* padding-top: 5px;
+  padding-bottom: 5px; */
+  padding: 5px;
+}
+.pop-up{
+  
+  position: fixed;
+  top: 25%;
+  left: 35%;
+  /* margin-left: 20%;
+  margin-top: 20%; */
+  border-radius: 5%;
+
+  display: none;
+  border-style: solid;
+  border-width: thin;
+  border-color: darkgray;
+  background-color: white;
+
+  height: 410px;
+  width: 500px;
+
+  
+}
+.edit-profile{
+  
+  margin-left: 30px;
+  margin-top: 60px;
+}
+.popup-input{
+  
+   display: block;
+   height:25px;
+   width: 96%;
+   margin-left: 5px;
+
+}
+.pop-up p{
+   margin-bottom: 0px;
+   padding-left: 5px;
+   font-size: 1.2em;
+   
+  
+}
+
+.paragraph_text{
+  /* height: fit-content;*/
+  /* width: inherit;  */
+  height: 1000px;
+  width: 99%;
+  border-style: hidden;
+  resize: none;
+  
+}
+
+pp{
+  font-size:small;
+
+}
+.date-display{
+  font-size:small;
+}
+
+
+/************************************************************************************/
+* {box-sizing: border-box}
+
+/* Full-width input fields */
+  input[type=text], input[type=password] {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 5px 0;
+  display: inline-block;
+  background: #fff;
+  border-style: solid;
+  border-width: thin;
+  border-color: darkgray;
+}
+h4{
+   margin: 5px;
+}
+input[type=text]:focus, input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+.popup-button {
+  background-color: #fff;
+  color: black;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+
+button:hover {
+  opacity:1;
+}
+
+/* Extra styles for the cancel button */
+.cancelbtn {
+  border-style: none;
+  padding: 14px 20px;
+  background-color:white;
+}
+.signupbtn {
+  padding: 14px 20px;
+  background-color: rgb(58, 99, 197);
+  color: white;
+  padding: 14px 20px;
+  border-radius: 8%;
+/*   margin: 8px 0; */
+  border: none;
+  cursor: pointer;
+  height: 43px;
+  width: 100px;
+  opacity: 0.9;
+}
+
+/* Float cancel and signup buttons and add an equal width */
+.cancelbtn {
+  /* float: left;
+  width: 50%; */
+  height: 43px;
+  width: 100px;
+}
+.edit{
+  border-style: none;
+  display: flex;
+  justify-content: space-between;
+  height: 30px;
+}
+#edit-profile-span{
+  font-size: 1.3em;
+  font-weight: bold;
+ 
+}
+#edit2{
+  border-style: none;
+  display: flex;
+  justify-content: space-between;
+}
+#color-select{
+  width: 100%;
+  height: 45px;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border-style: solid;
+  border-width: thin;
+  border-color: darkgray;
+  background: #fff;
+}
+
+
+
+/* .profile-image{
+  padding-top: 10px;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  background-color: #fff;
+} */
+/* Add padding to container elements */
+.container {
+  padding: 16px;
+  /* padding-left: 10px; */
+  
+}
+.clearfix{
+  display:flex;
+  justify-content: space-between;
+}
+
+.active{
+  background-color: rgb(58, 99, 197);
+}
+
+/************************************************************************************/
+
+
+
+
+
+
+
+/* These rules only apply if the window's max-width is 500px or less */
+@media all and (max-width: 500px) {
+  .logo {
+    display: none;
+  }
+  .col1{
+    display: none;
+  }
+  #arrow-back{
+    display: flex;
+
+  }
+  
+  
+}
+
+
+.wrapper {
+  max-width: 100%;
+  
+  margin: auto;
+  border-left-style: hidden;
+  border-right-style: hidden;
+}
+@media screen and (min-width: 500px) {
+  .wrapper {
+      display: flex;
+      border-style: solid;
+      border-width: thin;
+      border-color: darkgray;
+      height: 100%;
+     
+  }
+
+  .col2 {
+      flex: 5; /* This is a unitless proportion to the other columns. Try changing it */
+      height: fit-content;
+      width: 100%;
+
+  }
+
+  .col1 {
+      flex: 1.5;
+      border-right-style: solid;
+      border-width: thin;
+      border-color: darkgray;
+    
+
+  }
+}
