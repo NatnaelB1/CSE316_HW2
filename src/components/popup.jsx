@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
 
-function PopupWindow(props) {
+function PopupWindow({trigger, setTrigger, onChangeName, onChangeEmail, onChangeColor, userName, userEmail, userColor, handleProfileSubmit}) {
     
-    return (props.trigger) ? (
+    return (trigger) ? (
         <div className="background-window">
             <div className="pop-up">
         
@@ -12,7 +12,7 @@ function PopupWindow(props) {
                    
                     <div className="edit">
                         <div id="edit-profile-span">Edit profile</div>
-                        <div id="edit-profile-cancel"> <button className="popup-button" id="close-popup" onClick={() => props.setTrigger(false)}> X </button> </div>
+                        <div id="edit-profile-cancel"> <button className="popup-button" id="close-popup" onClick={() => setTrigger(false)}> X </button> </div>
                 
                     </div>
                     
@@ -27,15 +27,15 @@ function PopupWindow(props) {
                 
                 
                     <label htmlFor="text"><b>Name</b></label>
-                    <input type="text" placeholder="Enter name" name="name" required="" />
+                    <input type="text" value = {userName} onChange = {onChangeName} placeholder="Enter name" name="name" required="" />
                     
                     <label htmlFor="email"><b>Email</b></label>
-                    <input type="text" placeholder="Enter Email" name="email" required="" />
+                    <input type="text" value = {userEmail} onChange = {onChangeEmail} placeholder="Enter Email" name="email" required="" />
                 
                     
                     
                     <h4 htmlFor="color-select">Color Scheme</h4>
-                    <select name="color-select" id="color-select">
+                    <select name="color-select" value={userColor} onChange = {onChangeColor} id="color-select">
                         <option value="Light">Light</option>
                         <option value="Dark">Dark</option>
                     </select>
@@ -43,7 +43,7 @@ function PopupWindow(props) {
                     
                 
                     <div className="clearfix">
-                    <button type="submit" className="signupbtn">Save</button>
+                    <button type="submit" onClick={handleProfileSubmit} className="signupbtn">Save</button>
                     <button type="button" className="cancelbtn">Log out</button>
                     
                     </div>

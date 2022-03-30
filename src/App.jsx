@@ -9,8 +9,36 @@ import { WithContext as ReactTags } from 'react-tag-input'
 function App() {
   const [buttonPopup, setButtonPopup] = useState(false);
 
- 
+  const [userName, setUsername] = useState( localStorage.Users || '');
+  const [userEmail, setUserEmail] = useState( localStorage.Email || '');
+  const [userColor, setUserColor] = useState( localStorage.Color ||  '');
 
+
+  const onChangeName = e => {
+    setUsername(e.target.value);
+    
+  }
+
+  const onChangeEmail = e => {
+    setUserEmail(e.target.value);
+    
+  }
+
+  const onChangeColor = e => {
+    setUserColor(e.target.value);
+    
+  }
+  
+  const handleProfileSubmit = e => {
+    e.preventDefault();
+    setButtonPopup(false);
+
+  }
+  localStorage.setItem("Users", userName);
+  localStorage.setItem("Email", userEmail);
+  localStorage.setItem("Color", userColor);
+  
+   
   const get_Date = () => {
 
     var today = new Date();
@@ -25,10 +53,16 @@ function App() {
     return final_date;
   }
 
-  const [notes, setNotes] = useState([{id: 0,  body: "This is a note with a long line of text.", lastModified: get_Date(), note_tag: []} ,
-                                      {id: 1,  body: "Another wrapping line example", lastModified: get_Date(), note_tag: []}, 
-                                      {id: 2,  body: "CSE 316", lastModified: get_Date(), note_tag: []}
- ]);
+
+  const [notes, setNotes] = useState(JSON.parse(localStorage.notes) || [{id: 0,  body: "This is a note with a long line of text.", lastModified: get_Date(), note_tag: []},
+                                                                        {id: 1,  body: "Another wrapping line example", lastModified: get_Date(), note_tag: []}, 
+                                                                        {id: 2,  body: "CSE 316", lastModified: get_Date(), note_tag: []
+                                                                      }]
+ );
+
+ useEffect(() => {
+  localStorage.setItem("notes", JSON.stringify(notes));
+}, [notes]);
                                
                                   
   const onAddNote = () => {
@@ -48,6 +82,8 @@ function App() {
    
   const [activeNote, setActiveNote] = useState(notes[0].id);
  
+  
+  
   const getActiveNote = () => {
     return notes.find((note) => note.id === activeNote);
   }
@@ -100,7 +136,18 @@ function App() {
   
   if (useWindowSize()[0] <= 500 && buttonPopup === true){
       return (
-        <SmallPopupWindow />
+        <SmallPopupWindow 
+
+                     onChangeName = {onChangeName}
+                     onChangeEmail = {onChangeEmail}
+                     onChangeColor = {onChangeColor}
+                     userName = {userName}
+                     userEmail = {userEmail}
+                     userColor = {userColor}
+                     handleProfileSubmit = {handleProfileSubmit}
+        
+        
+        />
       );     
   } 
 
@@ -160,6 +207,9 @@ function App() {
                  setTags = {setTags}
 
                 
+
+
+                
         />
         <MainArea onDeleteNote = {onDeleteNote}  
                   activeNote = {getActiveNote()}
@@ -180,7 +230,20 @@ function App() {
                   
         />
         
-        <PopupWindow trigger={buttonPopup} setTrigger = {setButtonPopup}>
+        <PopupWindow trigger={buttonPopup} 
+                     setTrigger = {setButtonPopup}
+                     onChangeName = {onChangeName}
+                     onChangeEmail = {onChangeEmail}
+                     onChangeColor = {onChangeColor}
+                     userName = {userName}
+                     userEmail = {userEmail}
+                     userColor = {userColor}
+                     handleProfileSubmit = {handleProfileSubmit}
+
+
+
+        
+        >
             
         </PopupWindow>
 

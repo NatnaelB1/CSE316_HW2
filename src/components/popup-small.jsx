@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-function SmallPopupWindow ()
+function SmallPopupWindow ({onChangeName, onChangeEmail, onChangeColor, userName, userEmail, userColor, handleProfileSubmit})
 {
     return(
         <div className="pop-up-small">
@@ -23,15 +23,15 @@ function SmallPopupWindow ()
                   
               
                   <label htmlFor="text"><b>Name</b></label>
-                  <input type="text" placeholder="Enter name" name="name" required="" />
+                  <input type="text" value = {userName} onChange = {onChangeName} placeholder="Enter name" name="name" required="" />
                   
                   <label htmlFor="email"><b>Email</b></label>
-                  <input type="text" placeholder="Enter Email" name="email" required="" />
+                  <input type="text" value = {userEmail} onChange = {onChangeEmail} placeholder="Enter Email" name="email" required="" />
               
                   
                   
                   <h4 htmlFor="color-select">Color Scheme</h4>
-                  <select name="color-select" id="color-select">
+                  <select name="color-select" value={userColor} onChange = {onChangeColor} id="color-select">
                       <option value="Light">Light</option>
                       <option value="Dark">Dark</option>
                   </select>
@@ -39,7 +39,7 @@ function SmallPopupWindow ()
                   
               
                   <div className="clearfix">
-                  <button type="submit" className="signupbtn">Save</button>
+                  <button type="submit" onClick={handleProfileSubmit} className="signupbtn">Save</button>
                   <button type="button" className="cancelbtn">Log out</button>
                   
                   </div>
