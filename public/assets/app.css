@@ -244,6 +244,8 @@ button:hover {
   border-style: none;
   padding: 14px 20px;
   background-color: white;
+  padding-right: 0px;
+  padding-left: 40px;
 }
 .signupbtn {
   padding: 14px 20px;
@@ -297,6 +299,9 @@ div.ReactTags__selected a.ReactTags__remove {
   color: #aaa;
   margin-left: 5px;
   cursor: pointer;
+}
+.ReactTags__remove {
+  margin-left: 5px;
 }
 
 /* Styles for suggestions */

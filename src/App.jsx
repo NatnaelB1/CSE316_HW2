@@ -3,7 +3,7 @@ import MainArea from './components/col2';
 import PopupWindow from './components/popup';
 import SmallPopupWindow from './components/popup-small';
 
-import { useState, useLayoutEffect } from 'react';
+import { useState, useLayoutEffect, useEffect } from 'react';
 import { WithContext as ReactTags } from 'react-tag-input'
 
 function App() {
@@ -25,13 +25,12 @@ function App() {
     return final_date;
   }
 
-  const [notes, setNotes] = useState([{id: 0,  body: "This is a note with a long line of text.", lastModified: get_Date()} ,
-                                      {id: 1,  body: "Another wrapping line example", lastModified: get_Date()}, 
-                                      {id: 2,  body: "CSE 316", lastModified: get_Date()} ]);
-
-
-  const [tags, setTags] = useState([]);
-  
+  const [notes, setNotes] = useState([{id: 0,  body: "This is a note with a long line of text.", lastModified: get_Date(), note_tag: []} ,
+                                      {id: 1,  body: "Another wrapping line example", lastModified: get_Date(), note_tag: []}, 
+                                      {id: 2,  body: "CSE 316", lastModified: get_Date(), note_tag: []}
+ ]);
+                               
+                                  
   const onAddNote = () => {
     
     const newNote = {
@@ -53,11 +52,17 @@ function App() {
     return notes.find((note) => note.id === activeNote);
   }
 
-
+  useEffect(() => {
+    setTags(getActiveNote().note_tag);
+  }, [activeNote]);                           
+  
+  const [tags, setTags] = useState(getActiveNote().note_tag);
   
 
   const onDeleteNote = (DelTarget_note) => {
-    
+    if (notes.length === 1){
+      return "";
+    }
     if (DelTarget_note !== notes[0].id){
       setNotes(notes.filter((note) => note.id !== DelTarget_note ));
       return setActiveNote(notes[0].id); 
@@ -74,6 +79,7 @@ function App() {
       }
       return note;
     });
+    
     setNotes(updatedNotesList);
 
   }
@@ -101,10 +107,13 @@ function App() {
 
   const handleDelete = i => {
     setTags(tags.filter((tag, index) => index !== i));
+    getActiveNote().note_tag = tags.filter((tag, index) => index !== i);
   };
 
   const handleAddition = tag => {
     setTags([...tags, tag]);
+    getActiveNote().note_tag = [... tags, tag];
+  
   };
 
   const handleDrag = (tag, currPos, newPos) => {
@@ -114,12 +123,19 @@ function App() {
     newTags.splice(newPos, 0, tag);
 
     // re-render
+   getActiveNote().note_tag = newTags;
     setTags(newTags);
   };
 
   const handleTagClick = index => {
     console.log('The tag at index ' + index + ' was clicked');
   };
+  
+  const onClearAll = () => {
+    setTags([]);
+  };
+  
+  
   
 
 
@@ -134,6 +150,14 @@ function App() {
                  onAddNote = {onAddNote}
                  activeNote = {activeNote}
                  setActiveNote = {setActiveNote}
+                 
+                 handleDelete={handleDelete}
+                 handleAddition={handleAddition}
+                 handleDrag={handleDrag}
+                 handleTagClick={handleTagClick}
+                 onClearAll = {onClearAll}
+                 tags ={tags}
+                 setTags = {setTags}
 
                 
         />
@@ -146,7 +170,10 @@ function App() {
                   handleAddition={handleAddition}
                   handleDrag={handleDrag}
                   handleTagClick={handleTagClick}
+                  onClearAll = {onClearAll}
                   tags ={tags}
+                  setTags = {setTags}
+                  
                   
                   
                   

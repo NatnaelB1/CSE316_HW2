@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 
 function SideBar({notes, setTrigger, onAddNote, activeNote, setActiveNote})  {
     
+
     return (
         <div className="col1">
             
@@ -24,7 +25,7 @@ function SideBar({notes, setTrigger, onAddNote, activeNote, setActiveNote})  {
             
             {notes.map((note) => (
             
-                <div className= {`note-display  ${note.id === activeNote && "active" }`} id = {`${note.id}`} onClick={() => setActiveNote(note.id)}>
+                <div className= {`note-display  ${note.id === activeNote && "active" }`}  key = {`${note.id}`}    id = {`${note.id}`} onClick={() => setActiveNote(note.id) } >
                     <p> 
                         {note.body === "" ? "Add a Note" : note.body.substr(0,20) + "..."} 
                        

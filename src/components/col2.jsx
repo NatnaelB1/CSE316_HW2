@@ -17,6 +17,8 @@ function MainArea ({notes, onDeleteNote, activeNote, setActiveNote, onEditNote, 
     }
 
 
+
+
     return (
         <div className='col2'>
             <div className="note-bar">
@@ -37,13 +39,14 @@ function MainArea ({notes, onDeleteNote, activeNote, setActiveNote, onEditNote, 
                 <div className='Tag-area'>
                 
                     <ReactTags
+                    
                     handleDelete={handleDelete}
                     handleAddition={handleAddition}
                     handleDrag={handleDrag}
                     handleTagClick={handleTagClick}
                     placeholder="Enter a Tag ..."
                     minQueryLength={2}
-                    maxLength={5}
+                    maxLength={35}
                     autofocus={false}
                     allowDeleteFromEmptyInput={true}
                     autocomplete={true}
