@@ -3,10 +3,15 @@ import React, { Component } from 'react';
 
 
 
-function SideBar({notes, setTrigger, onAddNote, activeNote, setActiveNote})  {
+function SideBar({notes, setTrigger, onAddNote, activeNote, setActiveNote, sidebarV, setSideBarV, mainAreaV, setMainAreaV})  {
     
+    function multiple_onclick(n){
+        setActiveNote(n);
+        console.log(mainAreaV);
+        setMainAreaV(true); 
+    }
 
-    return (
+    return (sidebarV) ? (
         <div className="col1">
             
 
@@ -25,7 +30,10 @@ function SideBar({notes, setTrigger, onAddNote, activeNote, setActiveNote})  {
             
             {notes.map((note) => (
             
-                <div className= {`note-display  ${note.id === activeNote && "active" }`}  key = {`${note.id}`}    id = {`${note.id}`} onClick={() => setActiveNote(note.id) } >
+                <div className= {`note-display  ${note.id === activeNote && "active" }`}  key = {`${note.id}`}    id = {`${note.id}`}
+                    onClick={ () => {
+                        multiple_onclick(note.id)                        
+                    }}>
                     <p> 
                         {note.body === "" ? "Add a Note" : note.body.substr(0,20) + "..."} 
                        
@@ -40,7 +48,7 @@ function SideBar({notes, setTrigger, onAddNote, activeNote, setActiveNote})  {
 
 
         </div>
-    );
+    ) : "" ;
 
 }
  

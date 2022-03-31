@@ -397,9 +397,9 @@ div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
   .logo {
     display: none;
   }
-  .col1 {
+  /* .col1 {
     display: none;
-  }
+  } */
   #arrow-back {
     display: flex;
   }

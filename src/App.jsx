@@ -2,12 +2,16 @@ import SideBar from './components/col1';
 import MainArea from './components/col2';
 import PopupWindow from './components/popup';
 import SmallPopupWindow from './components/popup-small';
+import useWindowDimensions from './components/winsize';
 
 import { useState, useLayoutEffect, useEffect } from 'react';
 import { WithContext as ReactTags } from 'react-tag-input'
 
 function App() {
   const [buttonPopup, setButtonPopup] = useState(false);
+
+  const [sidebarV, setSideBarV] = useState(true);
+  const [mainAreaV, setMainAreaV] = useState(true);
 
   const [userName, setUsername] = useState( localStorage.Users || '');
   const [userEmail, setUserEmail] = useState( localStorage.Email || '');
@@ -62,7 +66,7 @@ function App() {
 
  useEffect(() => {
   localStorage.setItem("notes", JSON.stringify(notes));
-}, [notes]);
+ }, [notes]);
                                
                                   
   const onAddNote = () => {
@@ -120,39 +124,8 @@ function App() {
 
   }
 
-
-  function useWindowSize() {
-    const [size, setSize] = useState([0, 0]);
-    useLayoutEffect(() => {
-      function updateSize() {
-        setSize([window.innerWidth, window.innerHeight]);
-      }
-      window.addEventListener('resize', updateSize);
-      updateSize();
-      return () => window.removeEventListener('resize', updateSize);
-    }, []);
-    return size;
-  }
-  
-  if (useWindowSize()[0] <= 500 && buttonPopup === true){
-      return (
-        <SmallPopupWindow 
-
-                     onChangeName = {onChangeName}
-                     onChangeEmail = {onChangeEmail}
-                     onChangeColor = {onChangeColor}
-                     userName = {userName}
-                     userEmail = {userEmail}
-                     userColor = {userColor}
-                     handleProfileSubmit = {handleProfileSubmit}
-        
-        
-        />
-      );     
-  } 
-
-
-  const handleDelete = i => {
+   //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+   const handleDelete = i => {
     setTags(tags.filter((tag, index) => index !== i));
     getActiveNote().note_tag = tags.filter((tag, index) => index !== i);
   };
@@ -170,7 +143,7 @@ function App() {
     newTags.splice(newPos, 0, tag);
 
     // re-render
-   getActiveNote().note_tag = newTags;
+    getActiveNote().note_tag = newTags;
     setTags(newTags);
   };
 
@@ -183,7 +156,105 @@ function App() {
   };
   
   
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+  const handleBack = () => {
+    setMainAreaV(false);
+    
+  } 
   
+  const { height, width } = useWindowDimensions(); 
+  
+
+  useEffect(() => {
+    if(width > 500){
+      
+      setMainAreaV(true)
+    }
+     
+   }, [width]);
+                
+  
+  if (width <= 500){
+    if(buttonPopup === true){
+      return (
+        <SmallPopupWindow 
+
+                     onChangeName = {onChangeName}
+                     onChangeEmail = {onChangeEmail}
+                     onChangeColor = {onChangeColor}
+                     userName = {userName}
+                     userEmail = {userEmail}
+                     userColor = {userColor}
+                     handleProfileSubmit = {handleProfileSubmit}
+        
+        
+        />
+      ); 
+
+    }
+    
+    if(sidebarV === true && mainAreaV == false && buttonPopup === false){
+      return(
+        <SideBar trigger={buttonPopup} 
+                 setTrigger = {setButtonPopup} 
+                 notes = {notes} 
+                 setNotes = {setNotes}
+                 onAddNote = {onAddNote}
+                 activeNote = {activeNote}
+                 setActiveNote = {setActiveNote}
+                 
+                 handleDelete={handleDelete}
+                 handleAddition={handleAddition}
+                 handleDrag={handleDrag}
+                 handleTagClick={handleTagClick}
+                 onClearAll = {onClearAll}
+                 tags ={tags}
+                 setTags = {setTags}
+
+                 sidebarV = {sidebarV} 
+                 setSideBarV = {setSideBarV}
+                 mainAreaV = {mainAreaV}
+                setMainAreaV = {setMainAreaV}
+                 
+                 
+       
+        />
+
+      );
+    }
+    if(sidebarV === true && mainAreaV === true){
+      return(
+        <MainArea onDeleteNote = {onDeleteNote}  
+                  activeNote = {getActiveNote()}
+                  onEditNote = {onEditNote}
+                  get_Date = {get_Date}
+                  handleBack = {handleBack}
+
+                  handleDelete={handleDelete}
+                  handleAddition={handleAddition}
+                  handleDrag={handleDrag}
+                  handleTagClick={handleTagClick}
+                  onClearAll = {onClearAll}
+                  tags ={tags}
+                  setTags = {setTags}
+
+                  mainAreaV = {mainAreaV}
+                  setMainAreaV = {setMainAreaV}
+                 
+                  
+        />
+
+      );
+    }
+     
+    
+        
+  } 
+  
+  
+
 
 
   return (
@@ -206,15 +277,20 @@ function App() {
                  tags ={tags}
                  setTags = {setTags}
 
-                
-
-
-                
+                 sidebarV = {sidebarV} 
+                 setSideBarV = {setSideBarV}
+                 mainAreaV = {mainAreaV}
+                setMainAreaV = {setMainAreaV}
+                 
+                 
+       
         />
+
         <MainArea onDeleteNote = {onDeleteNote}  
                   activeNote = {getActiveNote()}
                   onEditNote = {onEditNote}
                   get_Date = {get_Date}
+                  handleBack = {handleBack}
 
                   handleDelete={handleDelete}
                   handleAddition={handleAddition}
@@ -223,10 +299,10 @@ function App() {
                   onClearAll = {onClearAll}
                   tags ={tags}
                   setTags = {setTags}
-                  
-                  
-                  
-                  
+
+                  mainAreaV = {mainAreaV}
+                  setMainAreaV = {setMainAreaV}
+                 
                   
         />
         
@@ -239,9 +315,6 @@ function App() {
                      userEmail = {userEmail}
                      userColor = {userColor}
                      handleProfileSubmit = {handleProfileSubmit}
-
-
-
         
         >
             
