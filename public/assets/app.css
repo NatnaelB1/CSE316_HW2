@@ -197,7 +197,12 @@ pp {
 .date-display {
   font-size: small;
 }
-
+.side-title {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
 /************************************************************************************/
 * {
   box-sizing: border-box;
@@ -432,6 +437,11 @@ div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
     border-right-style: solid;
     border-width: thin;
     border-color: darkgray;
+
+    min-width: 176px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 }
 

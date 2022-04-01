@@ -57,32 +57,39 @@ function App() {
     return final_date;
   }
 
+  if(localStorage.notes === undefined){
+    localStorage.setItem("notes", false);
+  }
+  
 
-  const [notes, setNotes] = useState(JSON.parse(localStorage.notes) || [{id: 0,  body: "This is a note with a long line of text.", lastModified: get_Date(), note_tag: []},
-                                                                        {id: 1,  body: "Another wrapping line example", lastModified: get_Date(), note_tag: []}, 
-                                                                        {id: 2,  body: "CSE 316", lastModified: get_Date(), note_tag: []
-                                                                      }]
+  const [notes, setNotes] = useState(JSON.parse(localStorage.notes) || [{id: 0,  body: "This is a note with a long line of text.", lastModified: get_Date(), note_tag: [{id:"cse" ,text:"cse"}]},
+                                                                        {id: 1,  body: "Another wrapping line example", lastModified: get_Date(), note_tag: [{id:"cse" ,text:"cse"}]}, 
+                                                                        {id: 2,  body: "CSE 316", lastModified: get_Date(), note_tag: [{id:"cse" ,text:"cse"}]}
+                                                                      ]
  );
 
  useEffect(() => {
-  localStorage.setItem("notes", JSON.stringify(notes));
+  
+ localStorage.setItem("notes", JSON.stringify(notes));
  }, [notes]);
-                               
-                                  
-  const onAddNote = () => {
+
+ 
+
+                                                                 
+const onAddNote = () => {
+  
+  const newNote = {
+    id: Date.now(), 
+    body: "",
+    lastModified: get_Date(),
+    note_tag: [{id:"cse" ,text:"cse"}]
+  };
     
-    const newNote = {
-      id: Date.now(), 
-      body: "",
-      lastModified: get_Date(),
-      note_tag: []
-    };
-     
 
-    setNotes([newNote , ... notes]);
+  setNotes([newNote , ... notes]);
 
 
-  } 
+} 
    
   const [activeNote, setActiveNote] = useState(notes[0].id);
  
@@ -94,7 +101,11 @@ function App() {
 
   useEffect(() => {
     setTags(getActiveNote().note_tag);
-  }, [activeNote]);                           
+  }, [activeNote]); 
+  
+  useEffect(() => {
+    localStorage.setItem("notes", JSON.stringify(notes));
+  }, activeNote.note_tag); 
   
   const [tags, setTags] = useState(getActiveNote().note_tag);
   
@@ -123,6 +134,7 @@ function App() {
     setNotes(updatedNotesList);
 
   }
+  
 
    //////////////////////////////////////////////////////////////////////////////////////////////////////////////
    const handleDelete = i => {
@@ -242,6 +254,7 @@ function App() {
 
                   mainAreaV = {mainAreaV}
                   setMainAreaV = {setMainAreaV}
+                  getActiveNote = {getActiveNote}
                  
                   
         />
@@ -302,6 +315,7 @@ function App() {
 
                   mainAreaV = {mainAreaV}
                   setMainAreaV = {setMainAreaV}
+                  getActiveNote = {getActiveNote}
                  
                   
         />

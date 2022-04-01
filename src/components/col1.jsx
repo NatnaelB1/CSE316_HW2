@@ -2,12 +2,10 @@ import React, { Component } from 'react';
 
 
 
-
 function SideBar({notes, setTrigger, onAddNote, activeNote, setActiveNote, sidebarV, setSideBarV, mainAreaV, setMainAreaV})  {
     
     function multiple_onclick(n){
         setActiveNote(n);
-        console.log(mainAreaV);
         setMainAreaV(true); 
     }
 
@@ -34,10 +32,10 @@ function SideBar({notes, setTrigger, onAddNote, activeNote, setActiveNote, sideb
                     onClick={ () => {
                         multiple_onclick(note.id)                        
                     }}>
-                    <p> 
-                        {note.body === "" ? "Add a Note" : note.body.substr(0,20) + "..."} 
-                       
-                    </p>
+                    <div className='side-title'>
+                        {note.body === "" ? "Add a Note" : note.body}
+                    </ div>
+                    
                     <small> {note.lastModified} </small>
                         
                 </div>

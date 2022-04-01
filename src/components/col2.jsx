@@ -3,14 +3,14 @@ import { WithContext as ReactTags } from 'react-tag-input'
 
 
 function MainArea ({notes, onDeleteNote, activeNote, setActiveNote, onEditNote, get_Date, handleDelete, handleAddition, handleDrag,
-                    handleTagClick, onTagUpdate, tags , handleBack , mainAreaV, setMainAreaV }){
+                    handleTagClick, onTagUpdate, tags , handleBack , mainAreaV, setMainAreaV, getActiveNote }){
     
     const onUpdateNotes = (value) => {
         onEditNote({
             ... activeNote,
             body: value,
             lastModified: get_Date(),
-            note_tag: [tags]
+            note_tag: getActiveNote().note_tag
         });
 
 
@@ -37,7 +37,7 @@ function MainArea ({notes, onDeleteNote, activeNote, setActiveNote, onEditNote, 
                 </div>
                 
                 <div className='Tag-area'>
-                
+                    
                     <ReactTags
                     
                     handleDelete={handleDelete}
