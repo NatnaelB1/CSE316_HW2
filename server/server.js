@@ -24,7 +24,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 app.get('/users', async function (req,res) {
     const users = await User.find({});
-    res.json(users);
+    res.json(users[0]);
 });
 
 app.post('/users/add', async function (req,res) {
@@ -56,12 +56,30 @@ app.put('/users/:id', async function (req,res) {
           }
       });
 });
+app.delete('/users/:id', async function (req,res) {
+    const id = req.params.id;
+    User.findByIdAndDelete(id,
+        null,
+        function (error, result) {
+            if (error) {
+                console.log("ERROR: " + error);
+                res.status(404).send(error.message);
+            } else {
+                console.log("Deleted successfully: " + result);
+                // Status 204 represents success with no content
+                // https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/204
+                res.sendStatus(204);
+            }
+        });
+  });
+  
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 app.post('/notes', async function (req,res) {
   console.log("Posted with body: " + JSON.stringify(req.body));
 
   const newNote = new Note({
-      id: req.body.id, 
+      id: Number(req.body.id), 
       notebody: req.body.notebody,
       lastModified: req.body.lastModified,
       note_tag: req.body.note_tag 
@@ -72,9 +90,10 @@ app.post('/notes', async function (req,res) {
 });
 
 app.get('/notes', async function (req,res) {
-  const notes = await Note.find({});
+  let notes = await Note.find({});
   res.json(notes);
 });
+  
 
 app.get('/notes/:id', async function (req,res) {
   let id = req.params.id;
@@ -86,17 +105,17 @@ app.get('/notes/:id', async function (req,res) {
       }
   }
 
-  console.log("No author with id: " + id);
+  console.log("No note with id: " + id);
   res.status(404);
-  res.send("No author with id: " + id);
+  res.send("No note with id: " + id);
 });
 
 app.put('/notes/:id', async function (req,res) {
-  let id = req.params.id;
-    console.log("PUT with id: " + id + ", body: " + JSON.stringify(req.body));
+  let myid = req.params.id;
+    console.log("PUT with id: " + myid + ", body: " + JSON.stringify(req.body));
     // This below method automatically saves it to the database
-    Note.findByIdAndUpdate(id,
-        {'id': req.body.id, "notebody": req.body.notebody, "lastModified": req.body.lastModified, "note_tag" : req.body.note_tag  },
+    Note.updateOne({id:myid},
+        {'id': Number(req.body.id), "notebody": req.body.notebody, "lastModified": req.body.lastModified, "note_tag" : req.body.note_tag  },
         function (err, result) {
             if (err) {
                 console.log("ERROR: " + err);
@@ -110,8 +129,8 @@ app.put('/notes/:id', async function (req,res) {
 })
 
 app.delete('/notes/:id', async function (req,res) {
-  const id = req.params.id;
-  Note.findByIdAndDelete(id,
+  const myid = req.params.id;
+  Note.remove({id:myid},
       null,
       function (error, result) {
           if (error) {
@@ -138,39 +157,3 @@ app.delete('/notes/:id', async function (req,res) {
 port = process.env.PORT || 6001;
 app.listen(port, () => { console.log('server started!')});
 
-// const express = require("express");
-// const cors = require("cors");
-// const  mongoose  = require("mongoose");
-// const path = require('path');
-// require('dotenv').config({ path: path.resolve(__dirname, './.env') });
-
-
-// const app = express();
-// //app.use(express.static(__dirname));
-// const bodyParser = require('body-parser');
-// app.use(bodyParser.json());
-
-// const port = process.env.PORT || 6001;
-
-// app.use(cors()); 
-// //app.use(express.json());
- 
-// const uri = process.env.ATLAS_URI; 
-// mongoose.connect(uri);
-
-// const connection = mongoose.connection;
-// connection.once('open', () => {
-  
-//   console.log("MongoDB database connection established successfully;");
-// })
-
-// const usersRouter = require('./routes/users');
-// const notesRouter = require('./routes/notes');
-
-// app.use('/users', usersRouter);
-// app.use('/notes', notesRouter);
- 
-// app.listen(port, () => {
-  
-//   console.log(`Server is running on port: ${port}`);
-// });

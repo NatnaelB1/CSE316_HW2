@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 
 
-function SideBar({notes, setTrigger, onAddNote, activeNote, setActiveNote, sidebarV, setSideBarV, mainAreaV, setMainAreaV})  {
+function SideBar({notes, setTrigger, onAddNote, activeNote, setActiveNote, sidebarV, setSideBarV, mainAreaV, setMainAreaV, handlesearch})  {
     
     function multiple_onclick(n){
         setActiveNote(n);
@@ -22,7 +22,7 @@ function SideBar({notes, setTrigger, onAddNote, activeNote, setActiveNote, sideb
 
             <div className="search">
                 <div><span className="material-icons" id="material-icon-search">search</span></div>
-                <input className="search2" type="search" placeholder="Search all notes" /> 
+                <input className="search2" type="search" onChange={(e) => handlesearch(e.target.value)} placeholder="Search all notes" /> 
             </div>
 
             
@@ -33,7 +33,7 @@ function SideBar({notes, setTrigger, onAddNote, activeNote, setActiveNote, sideb
                         multiple_onclick(note.id)                        
                     }}>
                     <div className='side-title'>
-                        {note.body === "" ? "Add a Note" : note.body}
+                        {note.notebody === "" ? "Add a Note" : note.notebody}
                     </ div>
                     
                     <small> {note.lastModified} </small>

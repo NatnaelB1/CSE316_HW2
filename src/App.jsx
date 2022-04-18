@@ -3,6 +3,7 @@ import MainArea from './components/col2';
 import PopupWindow from './components/popup';
 import SmallPopupWindow from './components/popup-small';
 import useWindowDimensions from './components/winsize';
+import axios, { Axios } from 'axios';
 
 import { useState, useLayoutEffect, useEffect } from 'react';
 import { WithContext as ReactTags } from 'react-tag-input'
@@ -13,9 +14,9 @@ function App() {
   const [sidebarV, setSideBarV] = useState(true);
   const [mainAreaV, setMainAreaV] = useState(true);
 
-  const [userName, setUsername] = useState( localStorage.Users || '');
-  const [userEmail, setUserEmail] = useState( localStorage.Email || '');
-  const [userColor, setUserColor] = useState( localStorage.Color ||  '');
+  const [userName, setUsername] = useState('');
+  const [userEmail, setUserEmail] = useState('');
+  const [userColor, setUserColor] = useState('');
 
 
   const onChangeName = e => {
@@ -32,16 +33,22 @@ function App() {
     setUserColor(e.target.value);
     
   }
+
+  const user = {
+    username: userName, 
+    useremail: userEmail,
+    usercolor: userColor
+    
+  };
   
   const handleProfileSubmit = e => {
     e.preventDefault();
     setButtonPopup(false);
+    console.log(user);
+    axios.post('/users/add', user)
+      .then(res => console.log(res.data)); 
 
   }
-  localStorage.setItem("Users", userName);
-  localStorage.setItem("Email", userEmail);
-  localStorage.setItem("Color", userColor);
-  
    
   const get_Date = () => {
 
@@ -57,30 +64,24 @@ function App() {
     return final_date;
   }
 
-  if(localStorage.notes === undefined){
-    localStorage.setItem("notes", false);
-  }
   
 
-  const [notes, setNotes] = useState(JSON.parse(localStorage.notes) || [{id: 0,  body: "This is a note with a long line of text.", lastModified: get_Date(), note_tag: [{id:"cse" ,text:"cse"}]},
-                                                                        {id: 1,  body: "Another wrapping line example", lastModified: get_Date(), note_tag: [{id:"cse" ,text:"cse"}]}, 
-                                                                        {id: 2,  body: "CSE 316", lastModified: get_Date(), note_tag: [{id:"cse" ,text:"cse"}]}
-                                                                      ]
- );
+  const [notes, setNotes] = useState([{id: 0,  notebody: "This is a note with a long line of text.", lastModified: get_Date(), note_tag: [{id:"cse" ,text:"cse"}]}]);
 
- useEffect(() => {
+useEffect(()=>{
+  axios.get('/notes').then(res => {
+    let n = notes.concat(res.data);
+    setNotes(n)
+  }  
+  )
   
- localStorage.setItem("notes", JSON.stringify(notes));
- }, [notes]);
-
- 
-
+},[])
                                                                  
 const onAddNote = () => {
   
   const newNote = {
     id: Date.now(), 
-    body: "",
+    notebody: "",
     lastModified: get_Date(),
     note_tag: [{id:"cse" ,text:"cse"}]
   };
@@ -88,8 +89,12 @@ const onAddNote = () => {
 
   setNotes([newNote , ... notes]);
 
+  axios.post('/notes', newNote)
+      .then(res => console.log(res.data));
+
 
 } 
+
    
   const [activeNote, setActiveNote] = useState(notes[0].id);
  
@@ -103,9 +108,6 @@ const onAddNote = () => {
     setTags(getActiveNote().note_tag);
   }, [activeNote]); 
   
-  useEffect(() => {
-    localStorage.setItem("notes", JSON.stringify(notes));
-  }, activeNote.note_tag); 
   
   const [tags, setTags] = useState(getActiveNote().note_tag);
   
@@ -114,14 +116,19 @@ const onAddNote = () => {
     if (notes.length === 1){
       return "";
     }
+  
+    axios.delete('/notes/' + getActiveNote().id)
+      .then(res => console.log(res.data));
+
     if (DelTarget_note !== notes[0].id){
       setNotes(notes.filter((note) => note.id !== DelTarget_note ));
       return setActiveNote(notes[0].id); 
     }
     setNotes(notes.filter((note) => note.id !== DelTarget_note ));
-    return setActiveNote(notes[1].id);    
+      return setActiveNote(notes[1].id);  
     
   }
+  
 
   const onEditNote = (updatedNote) => {
     const updatedNotesList = notes.map((note) => {
@@ -130,9 +137,26 @@ const onAddNote = () => {
       }
       return note;
     });
-    
     setNotes(updatedNotesList);
+    
+    axios.put('/notes/' + getActiveNote().id, updatedNote)
+      .then(res => console.log(res.data));
+    
 
+  }
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handlesearch = (newSearchQuery) => {
+    
+    setSearchQuery(newSearchQuery);
+    let newNoteList=notes.filter ((note) => {
+      if (note.notebody.toLowerCase().includes(newSearchQuery.toLowerCase())){
+        return note;
+      }else{
+        return 
+      }
+    })
+    setNotes(newNoteList);
   }
   
 
@@ -140,11 +164,15 @@ const onAddNote = () => {
    const handleDelete = i => {
     setTags(tags.filter((tag, index) => index !== i));
     getActiveNote().note_tag = tags.filter((tag, index) => index !== i);
+    axios.put('/notes/' + getActiveNote().id, getActiveNote())
+      .then(res => console.log(res.data));
   };
 
   const handleAddition = tag => {
     setTags([...tags, tag]);
     getActiveNote().note_tag = [... tags, tag];
+    axios.put('/notes/' + getActiveNote().id, getActiveNote())
+      .then(res => console.log(res.data));
   
   };
 
@@ -157,6 +185,8 @@ const onAddNote = () => {
     // re-render
     getActiveNote().note_tag = newTags;
     setTags(newTags);
+    axios.put('/notes/' + getActiveNote().id, getActiveNote())
+      .then(res => console.log(res.data));
   };
 
   const handleTagClick = index => {
@@ -294,6 +324,8 @@ const onAddNote = () => {
                  setSideBarV = {setSideBarV}
                  mainAreaV = {mainAreaV}
                 setMainAreaV = {setMainAreaV}
+
+                handlesearch = {handlesearch}
                  
                  
        

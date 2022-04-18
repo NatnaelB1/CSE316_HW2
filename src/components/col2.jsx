@@ -8,7 +8,7 @@ function MainArea ({notes, onDeleteNote, activeNote, setActiveNote, onEditNote, 
     const onUpdateNotes = (value) => {
         onEditNote({
             ... activeNote,
-            body: value,
+            notebody: value,
             lastModified: get_Date(),
             note_tag: getActiveNote().note_tag
         });
@@ -31,7 +31,7 @@ function MainArea ({notes, onDeleteNote, activeNote, setActiveNote, onEditNote, 
             <div className='mainn'>
 
                 <div className='mainn2'>
-                    <textarea className="paragraph_text" value = {activeNote.body} onChange={(e) => onUpdateNotes(e.target.value) }> 
+                    <textarea className="paragraph_text" value = {activeNote.notebody} onChange={(e) => onUpdateNotes(e.target.value) }> 
                     
                     </textarea>
                 </div>
