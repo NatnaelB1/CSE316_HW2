@@ -14,10 +14,34 @@ function App() {
   const [sidebarV, setSideBarV] = useState(true);
   const [mainAreaV, setMainAreaV] = useState(true);
 
-  const [userName, setUsername] = useState('');
+  const [userName, setUsername] = useState ('');
   const [userEmail, setUserEmail] = useState('');
   const [userColor, setUserColor] = useState('');
 
+  useEffect(()=>{
+    axios.get('/users').then(res => {
+      let un = userName.concat(res.data.username);
+      setUsername(un)
+    }  
+    )
+    
+  },[])
+  useEffect(()=>{
+    axios.get('/users').then(res => {
+      let ue = userEmail.concat(res.data.useremail);
+      setUserEmail(ue)
+    }  
+    )
+    
+  },[])
+  useEffect(()=>{
+    axios.get('/users').then(res => {
+      let uc = userColor.concat(res.data.usercolor);
+      setUserColor(uc)
+    }  
+    )
+    
+  },[])
 
   const onChangeName = e => {
     setUsername(e.target.value);
@@ -92,6 +116,7 @@ const onAddNote = () => {
   axios.post('/notes', newNote)
       .then(res => console.log(res.data));
 
+  window.location.reload();
 
 } 
 
@@ -147,16 +172,7 @@ const onAddNote = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const handlesearch = (newSearchQuery) => {
-    
     setSearchQuery(newSearchQuery);
-    let newNoteList=notes.filter ((note) => {
-      if (note.notebody.toLowerCase().includes(newSearchQuery.toLowerCase())){
-        return note;
-      }else{
-        return 
-      }
-    })
-    setNotes(newNoteList);
   }
   
 
@@ -241,7 +257,7 @@ const onAddNote = () => {
       return(
         <SideBar trigger={buttonPopup} 
                  setTrigger = {setButtonPopup} 
-                 notes = {notes} 
+                 notes = {notes.filter((note) => note.notebody.toLowerCase().includes(searchQuery.toLowerCase()))} 
                  setNotes = {setNotes}
                  onAddNote = {onAddNote}
                  activeNote = {activeNote}
@@ -306,7 +322,7 @@ const onAddNote = () => {
         
         <SideBar trigger={buttonPopup} 
                  setTrigger = {setButtonPopup} 
-                 notes = {notes} 
+                 notes = {notes.filter((note) => note.notebody.toLowerCase().includes(searchQuery.toLowerCase()))} 
                  setNotes = {setNotes}
                  onAddNote = {onAddNote}
                  activeNote = {activeNote}
