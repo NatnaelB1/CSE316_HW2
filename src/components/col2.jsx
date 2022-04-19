@@ -8,6 +8,7 @@ function MainArea ({notes, onDeleteNote, activeNote, setActiveNote, onEditNote, 
     const onUpdateNotes = (value) => {
         onEditNote({
             ... activeNote,
+            forsort: Date.now(), 
             notebody: value,
             lastModified: get_Date(),
             note_tag: getActiveNote().note_tag

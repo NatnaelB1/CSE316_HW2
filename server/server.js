@@ -80,6 +80,7 @@ app.post('/notes', async function (req,res) {
 
   const newNote = new Note({
       id: Number(req.body.id), 
+      forsort: Number(req.body.forsort), 
       notebody: req.body.notebody,
       lastModified: req.body.lastModified,
       note_tag: req.body.note_tag 
@@ -115,7 +116,7 @@ app.put('/notes/:id', async function (req,res) {
     console.log("PUT with id: " + myid + ", body: " + JSON.stringify(req.body));
     // This below method automatically saves it to the database
     Note.updateOne({id:myid},
-        {'id': Number(req.body.id), "notebody": req.body.notebody, "lastModified": req.body.lastModified, "note_tag" : req.body.note_tag  },
+        {'id': Number(req.body.id), "forsort": Number(req.body.forsort), "notebody": req.body.notebody, "lastModified": req.body.lastModified, "note_tag" : req.body.note_tag  },
         function (err, result) {
             if (err) {
                 console.log("ERROR: " + err);

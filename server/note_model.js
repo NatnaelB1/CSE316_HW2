@@ -5,6 +5,7 @@ var Schema = mongoose.Schema;
 const noteSchema = new Schema(
     {
     id: Number, 
+    forsort: Number,
     notebody: String,
     lastModified: String,
     note_tag: [{

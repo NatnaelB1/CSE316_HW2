@@ -2,13 +2,18 @@ import React, { Component } from 'react';
 
 
 
-function SideBar({notes, setTrigger, onAddNote, activeNote, setActiveNote, sidebarV, setSideBarV, mainAreaV, setMainAreaV, handlesearch})  {
+function SideBar({notes, setTrigger, onAddNote, activeNote, setActiveNote, sidebarV, setSideBarV, mainAreaV, setMainAreaV, handlesearch, searchQuery})  {
     
     function multiple_onclick(n){
         setActiveNote(n);
         setMainAreaV(true); 
     }
+    const sortedNotes = notes.sort((a,b) => b.forsort - a.forsort)
 
+    if(notes.length > 0 && searchQuery !== ""){
+        setActiveNote(notes[0].id);
+    }
+    
     return (sidebarV) ? (
         <div className="col1">
             
@@ -26,7 +31,7 @@ function SideBar({notes, setTrigger, onAddNote, activeNote, setActiveNote, sideb
             </div>
 
             
-            {notes.map((note) => (
+            {sortedNotes.map((note) => (
             
                 <div className= {`note-display  ${note.id === activeNote && "active" }`}  key = {`${note.id}`}    id = {`${note.id}`}
                     onClick={ () => {

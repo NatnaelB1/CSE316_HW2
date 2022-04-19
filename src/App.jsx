@@ -99,7 +99,7 @@ function App() {
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////NOTES////////////////////////////////////////////////////////////////// 
 
-const [notes, setNotes] = useState([{id: 0,  notebody: "This is a note with a long line of text.", lastModified: get_Date(), note_tag: [{id:"cse" ,text:"cse"}]}]);
+const [notes, setNotes] = useState([{id: 0, forsort: Date.now(), notebody: "This is a note with a long line of text. This note is a static(placeholder)", lastModified: get_Date(), note_tag: [{id:"cse" ,text:"cse"}]}]);
 
 //gets notes from the database
 useEffect(()=>{
@@ -115,7 +115,8 @@ useEffect(()=>{
 const onAddNote = () => {
   
   const newNote = {
-    id: Date.now(), 
+    id: Date.now(),
+    forsort: Date.now(), 
     notebody: "",
     lastModified: get_Date(),
     note_tag: [{id:"cse" ,text:"cse"}]
@@ -289,6 +290,8 @@ const onAddNote = () => {
                  setSideBarV = {setSideBarV}
                  mainAreaV = {mainAreaV}
                 setMainAreaV = {setMainAreaV}
+                handlesearch = {handlesearch}
+                searchQuery = {searchQuery}
                  
                  
        
@@ -358,6 +361,7 @@ const onAddNote = () => {
                 setMainAreaV = {setMainAreaV}
 
                 handlesearch = {handlesearch}
+                searchQuery = {searchQuery}
                  
                  
        
