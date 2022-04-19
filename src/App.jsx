@@ -18,6 +18,10 @@ function App() {
   const [userEmail, setUserEmail] = useState('');
   const [userColor, setUserColor] = useState('');
 
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////USERS////////////////////////////////////////////////////////////////// 
+  
+  //gets username from the database
   useEffect(()=>{
     axios.get('/users').then(res => {
       let un = userName.concat(res.data.username);
@@ -26,6 +30,7 @@ function App() {
     )
     
   },[])
+  //gets useremail from the database
   useEffect(()=>{
     axios.get('/users').then(res => {
       let ue = userEmail.concat(res.data.useremail);
@@ -34,6 +39,7 @@ function App() {
     )
     
   },[])
+  //gets usercolorscheme for the database
   useEffect(()=>{
     axios.get('/users').then(res => {
       let uc = userColor.concat(res.data.usercolor);
@@ -42,17 +48,17 @@ function App() {
     )
     
   },[])
-
+  //sets the value of username based on keyboard input
   const onChangeName = e => {
     setUsername(e.target.value);
     
   }
-
+ //sets the value of useremail based on keyboard input
   const onChangeEmail = e => {
     setUserEmail(e.target.value);
     
   }
-
+   //sets the value of usercolorScheme based on keyboard input
   const onChangeColor = e => {
     setUserColor(e.target.value);
     
@@ -64,7 +70,7 @@ function App() {
     usercolor: userColor
     
   };
-  
+  //saves user to the database
   const handleProfileSubmit = e => {
     e.preventDefault();
     setButtonPopup(false);
@@ -73,7 +79,9 @@ function App() {
       .then(res => console.log(res.data)); 
 
   }
-   
+ //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////DATE//////////////////////////////////////////////////////////////////   
+  //recieves the date and puts it in the specified format
   const get_Date = () => {
 
     var today = new Date();
@@ -88,10 +96,12 @@ function App() {
     return final_date;
   }
 
-  
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////NOTES////////////////////////////////////////////////////////////////// 
 
-  const [notes, setNotes] = useState([{id: 0,  notebody: "This is a note with a long line of text.", lastModified: get_Date(), note_tag: [{id:"cse" ,text:"cse"}]}]);
+const [notes, setNotes] = useState([{id: 0,  notebody: "This is a note with a long line of text.", lastModified: get_Date(), note_tag: [{id:"cse" ,text:"cse"}]}]);
 
+//gets notes from the database
 useEffect(()=>{
   axios.get('/notes').then(res => {
     let n = notes.concat(res.data);
@@ -100,7 +110,8 @@ useEffect(()=>{
   )
   
 },[])
-                                                                 
+
+//adding a new note
 const onAddNote = () => {
   
   const newNote = {
@@ -119,16 +130,14 @@ const onAddNote = () => {
   window.location.reload();
 
 } 
-
-   
-  const [activeNote, setActiveNote] = useState(notes[0].id);
  
+  const [activeNote, setActiveNote] = useState(notes[0].id);
   
-  
+  //gets active note
   const getActiveNote = () => {
     return notes.find((note) => note.id === activeNote);
   }
-
+  //Finding the activenote for tags
   useEffect(() => {
     setTags(getActiveNote().note_tag);
   }, [activeNote]); 
@@ -136,7 +145,7 @@ const onAddNote = () => {
   
   const [tags, setTags] = useState(getActiveNote().note_tag);
   
-
+  //note delete
   const onDeleteNote = (DelTarget_note) => {
     if (notes.length === 1){
       return "";
@@ -154,7 +163,7 @@ const onAddNote = () => {
     
   }
   
-
+  //Note edit
   const onEditNote = (updatedNote) => {
     const updatedNotesList = notes.map((note) => {
       if(note.id === activeNote){
@@ -171,19 +180,22 @@ const onAddNote = () => {
   }
   const [searchQuery, setSearchQuery] = useState("");
 
+  //for search functionality
   const handlesearch = (newSearchQuery) => {
     setSearchQuery(newSearchQuery);
   }
   
 
    //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+   ///////////////////////////////////////TAGS///////////////////////////////////////////////////////////////////
+   //for deleting tags
    const handleDelete = i => {
     setTags(tags.filter((tag, index) => index !== i));
     getActiveNote().note_tag = tags.filter((tag, index) => index !== i);
     axios.put('/notes/' + getActiveNote().id, getActiveNote())
       .then(res => console.log(res.data));
   };
-
+  //for adding tags
   const handleAddition = tag => {
     setTags([...tags, tag]);
     getActiveNote().note_tag = [... tags, tag];
@@ -191,7 +203,7 @@ const onAddNote = () => {
       .then(res => console.log(res.data));
   
   };
-
+  //handling response of tag draging 
   const handleDrag = (tag, currPos, newPos) => {
     const newTags = tags.slice();
 
@@ -204,27 +216,29 @@ const onAddNote = () => {
     axios.put('/notes/' + getActiveNote().id, getActiveNote())
       .then(res => console.log(res.data));
   };
-
+  // function for when a tag is clicked(doesn't have any functionality)
   const handleTagClick = index => {
     console.log('The tag at index ' + index + ' was clicked');
   };
-  
+  //to clear all the tags(not added as a functionality) 
   const onClearAll = () => {
     setTags([]);
   };
   
   
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////RENDERS < 500px//////////////////////////////////////////////////////// 
+  
+  //for back arrow, sets the main note area to false 
   const handleBack = () => {
     setMainAreaV(false);
     
   } 
   
-  const { height, width } = useWindowDimensions(); 
+  const { height, width } = useWindowDimensions();  //gets the dimensions of our screen
   
-
+  //handles view based on screen size
   useEffect(() => {
     if(width > 500){
       
@@ -313,7 +327,9 @@ const onAddNote = () => {
   } 
   
   
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////RENDERS > 500px//////////////////////////////////////////////////////// 
 
 
   return (

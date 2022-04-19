@@ -9,7 +9,7 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
 //Set up mongoose connection
-var mongoDB = "mongodb://localhost:27017/H2"; // insert your database URL here
+var mongoDB = "mongodb+srv://natnaelbereda:IosADnkyBdQsXluK@cse316hw3.yfcv9.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"; // insert your database URL here
 mongoose.connect(mongoDB, { useNewUrlParser: true , useUnifiedTopology: true});
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
