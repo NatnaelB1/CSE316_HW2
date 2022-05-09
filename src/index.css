@@ -5,9 +5,126 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+ 
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+#login_h1{
+  font-family: sans-serif;
+  text-align: center;
+  margin-top: 30%;
+ 
+}
+.login_h3{
+  text-align:center;
+  
+}
+.loginwindow{
+  background-color: aliceblue;
+  position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 10
+
+}
+
+.login_input{
+  justify-content: center;
+  top: 25%;
+  left: 35%;
+  border-radius: 5%;
+  margin-left: auto; 
+  margin-right: auto; 
+  
+  border-style: none;
+  border-width: thin;
+  border-color: darkgray;
+  background-color: white;
+
+  height: 410px;
+  width: 500px;
+}
+
+.newAccount_input{
+  border-radius: 5%;
+  margin-top: 40%;
+  margin-left: auto;
+  margin-right: auto; 
+  padding: 20px;
+  
+  border-style: double;
+  border-width: thin;
+  border-color: darkgray;
+  background-color: white;
+
+  height: 410px;
+  width: 500px;
+  
+}
+
+
+.login_container {
+  padding: 20px;
+  /* padding-left: 10px; */
+  
+}
+#login_button{
+  /* padding: 14px 20px; */
+  background-color: rgb(58, 99, 197);
+  color: white;
+  padding: 14px 20px;
+  border-radius: 8%;
+  border: none;
+  cursor: pointer;
+  height: 43px;
+  width: 100%;
+  margin-top: 25px;
+  
+}
+hr{
+  margin: 25px 0 25px 0;
+}
+
+.dlt_btn{
+  border-style: none;
+  padding: 14px 20px;
+  background-color: rgb(26, 158, 26);
+  color: white;
+  border-radius: 15%;
+  
+}
+#dlt_div{
+  text-align: center;
+}
+#signup_top{
+  display: flex;
+  justify-content: space-between;
+}
+
+#x_button{
+  margin-top: 18px;
+}
+#signbtn_div{
+  text-align: center;
+  margin-top: 10px;
+}
+#login_popup{
+  background-color: rgba(148, 146, 146, 0.9);
+  position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 10;
+
+
+}
+
+
+

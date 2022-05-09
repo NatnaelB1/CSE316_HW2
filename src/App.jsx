@@ -1,58 +1,79 @@
+
+// import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router-dom'
+import MainPage from './components/mainpage';
 import SideBar from './components/col1';
 import MainArea from './components/col2';
 import PopupWindow from './components/popup';
 import SmallPopupWindow from './components/popup-small';
 import useWindowDimensions from './components/winsize';
+import LoginPage from './components/loginpage';
+//import {useHistory} from "react-router-dom";
+// import createBrowserHistory from 'history/createBrowserHistory';
+
+// import NewAccount from './components/account';
+// import LoginWindow from './components/login';
 import axios, { Axios } from 'axios';
 
-import { useState, useLayoutEffect, useEffect } from 'react';
+import { useState, useLayoutEffect, useEffect, Fragment } from 'react';
 import { WithContext as ReactTags } from 'react-tag-input'
 
 function App() {
   const [buttonPopup, setButtonPopup] = useState(false);
-
+  
+  const [loginpop, setLoginPop] = useState(false);
+  
   const [sidebarV, setSideBarV] = useState(true);
   const [mainAreaV, setMainAreaV] = useState(true);
 
   const [userName, setUsername] = useState ('');
   const [userEmail, setUserEmail] = useState('');
+  const [userPassword, setUserPassword] = useState('');
   const [userColor, setUserColor] = useState('');
+
+  const [authorized, setAuthorized] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(false);
+
+  const [notedisplay, setNoteDisplay] = useState(false);
+  const [logindisplay, setLoginDisplay] = useState(true);
+
+  
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////USERS////////////////////////////////////////////////////////////////// 
   
-  //gets username from the database
-  useEffect(()=>{
-    axios.get('/users').then(res => {
-      let un = userName.concat(res.data.username);
-      setUsername(un)
-    }  
-    )
+  // //gets username from the database
+  // useEffect(()=>{
+  //   axios.get('/users').then(res => {
+  //     let un = userName.concat(res.data.username);
+  //     setUsername(un)
+  //   }  
+  //   )
     
-  },[])
-  //gets useremail from the database
-  useEffect(()=>{
-    axios.get('/users').then(res => {
-      let ue = userEmail.concat(res.data.useremail);
-      setUserEmail(ue)
-    }  
-    )
+  // },[])
+  // //gets useremail from the database
+  // useEffect(()=>{
+  //   axios.get('/users').then(res => {
+  //     let ue = userEmail.concat(res.data.useremail);
+  //     setUserEmail(ue)
+  //   }  
+  //   )
     
-  },[])
-  //gets usercolorscheme for the database
-  useEffect(()=>{
-    axios.get('/users').then(res => {
-      let uc = userColor.concat(res.data.usercolor);
-      setUserColor(uc)
-    }  
-    )
+  // },[])
+  // //gets usercolorscheme for the database
+  // useEffect(()=>{
+  //   axios.get('/users').then(res => {
+  //     let uc = userColor.concat(res.data.usercolor);
+  //     setUserColor(uc)
+  //   }  
+  //   )
     
-  },[])
+  // },[])
   //sets the value of username based on keyboard input
   const onChangeName = e => {
     setUsername(e.target.value);
     
   }
+  
  //sets the value of useremail based on keyboard input
   const onChangeEmail = e => {
     setUserEmail(e.target.value);
@@ -63,10 +84,22 @@ function App() {
     setUserColor(e.target.value);
     
   }
+  const onEditName = e => {
+    setUsername(e.target.value);
+  }
+  const onEditEmail = e => {
+    setUserEmail(e.target.value);
+  }
+  
 
+  const onChangePassword = e => {
+    setUserPassword(e.target.value);
+    
+  }
   const user = {
     username: userName, 
     useremail: userEmail,
+    userpassword: userPassword,
     usercolor: userColor
     
   };
@@ -75,10 +108,48 @@ function App() {
     e.preventDefault();
     setButtonPopup(false);
     console.log(user);
-    axios.post('/users/add', user)
+    axios.put('/edit', user)
       .then(res => console.log(res.data)); 
 
   }
+
+  const handleSignin = (e) => {
+    e.preventDefault();
+    axios.post('/register', user)
+      .then(res => console.log(res.data));
+  }
+  
+  const handlelogin = (e) => {
+    e.preventDefault();
+    axios.post('/login', user)
+      .then(function (res){
+        console.log("Successful login");
+
+        setErrorMessage(false);
+        setNoteDisplay(true);
+        setLoginDisplay(false);      
+  
+      }) 
+      .catch((err)=> {
+        console.log("errorMessage");
+        setErrorMessage(true);
+      });
+  }
+
+  const handleLogout = () => {
+
+    axios.post('/logout', user)
+      .then(function (res){
+        console.log("Successful logout");
+        setLoginDisplay(true);
+        setNoteDisplay(false);
+      })
+      .catch((err) =>{
+        console.log("Unsuccessful logout");
+      });
+    
+    
+}
  //////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////DATE//////////////////////////////////////////////////////////////////   
   //recieves the date and puts it in the specified format
@@ -128,7 +199,7 @@ const onAddNote = () => {
   axios.post('/notes', newNote)
       .then(res => console.log(res.data));
 
-  window.location.reload();
+  // window.location.reload();
 
 } 
  
@@ -240,6 +311,7 @@ const onAddNote = () => {
   const { height, width } = useWindowDimensions();  //gets the dimensions of our screen
   
   //handles view based on screen size
+ 
   useEffect(() => {
     if(width > 500){
       
@@ -251,6 +323,7 @@ const onAddNote = () => {
   
   if (width <= 500){
     if(buttonPopup === true){
+      
       return (
         <SmallPopupWindow 
 
@@ -329,6 +402,7 @@ const onAddNote = () => {
         
   } 
   
+ 
   
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -337,76 +411,85 @@ const onAddNote = () => {
 
   return (
 
-      <div className="wrapper">
-        
-        <SideBar trigger={buttonPopup} 
-                 setTrigger = {setButtonPopup} 
-                 notes = {notes.filter((note) => note.notebody.toLowerCase().includes(searchQuery.toLowerCase()))} 
-                 setNotes = {setNotes}
-                 onAddNote = {onAddNote}
-                 activeNote = {activeNote}
-                 setActiveNote = {setActiveNote}
-                 
-                 handleDelete={handleDelete}
-                 handleAddition={handleAddition}
-                 handleDrag={handleDrag}
-                 handleTagClick={handleTagClick}
-                 onClearAll = {onClearAll}
-                 tags ={tags}
-                 setTags = {setTags}
+        <div>
+                    
+           <LoginPage loginpop = {loginpop}
+                      setLoginPop = {setLoginPop}
+                      handleSignin = {handleSignin}
 
-                 sidebarV = {sidebarV} 
-                 setSideBarV = {setSideBarV}
-                 mainAreaV = {mainAreaV}
-                setMainAreaV = {setMainAreaV}
+                      onChangeName = {onChangeName}
+                      onChangeEmail = {onChangeEmail}
+                      onChangeColor = {onChangeColor}
+                      onChangePassword = {onChangePassword}
+                      userPassword = {userPassword}
+                      userName = {userName}
+                      userEmail = {userEmail}
 
-                handlesearch = {handlesearch}
-                searchQuery = {searchQuery}
-                 
-                 
-       
-        />
-
-        <MainArea onDeleteNote = {onDeleteNote}  
-                  activeNote = {getActiveNote()}
-                  onEditNote = {onEditNote}
-                  get_Date = {get_Date}
-                  handleBack = {handleBack}
-
-                  handleDelete={handleDelete}
-                  handleAddition={handleAddition}
-                  handleDrag={handleDrag}
-                  handleTagClick={handleTagClick}
-                  onClearAll = {onClearAll}
-                  tags ={tags}
-                  setTags = {setTags}
-
-                  mainAreaV = {mainAreaV}
-                  setMainAreaV = {setMainAreaV}
-                  getActiveNote = {getActiveNote}
-                 
-                  
-        />
-        
-        <PopupWindow trigger={buttonPopup} 
-                     setTrigger = {setButtonPopup}
-                     onChangeName = {onChangeName}
-                     onChangeEmail = {onChangeEmail}
-                     onChangeColor = {onChangeColor}
-                     userName = {userName}
-                     userEmail = {userEmail}
-                     userColor = {userColor}
-                     handleProfileSubmit = {handleProfileSubmit}
-        
-        >
-            
-        </PopupWindow>
-
+                      handlelogin = {handlelogin}
+                      authorized = {authorized}
+                      setAuthorized = {setAuthorized}
+                      errorMessage = {errorMessage}
+                      setErrorMessage = {setErrorMessage}
+                      notedisplay = {notedisplay} 
+                      setNoteDisplay = {setNoteDisplay}
+                      logindisplay = {logindisplay} 
+                      setLoginDisplay = {setLoginDisplay}
+          />
+          
+                    
+          <MainPage  buttonPopup={buttonPopup} 
+                      setButtonPopup = {setButtonPopup} 
+                      notes = {notes.filter((note) => note.notebody.toLowerCase().includes(searchQuery.toLowerCase()))} 
+                      setNotes = {setNotes}
+                      onAddNote = {onAddNote}
+                      activeNote = {activeNote}
+                      setActiveNote = {setActiveNote}
+                      
+                      handleDelete={handleDelete}
+                      handleAddition={handleAddition}
+                      handleDrag={handleDrag}
+                      handleTagClick={handleTagClick}
+                      onClearAll = {onClearAll}
+                      tags ={tags}
+                      setTags = {setTags}
       
-      </div>
+                      sidebarV = {sidebarV} 
+                      setSideBarV = {setSideBarV}
+                      mainAreaV = {mainAreaV}
+                      setMainAreaV = {setMainAreaV}
+      
+                      handlesearch = {handlesearch}
+                      searchQuery = {searchQuery}
+      
+                      onDeleteNote = {onDeleteNote}  
+                      
+                      onEditNote = {onEditNote}
+                      get_Date = {get_Date}
+                      handleBack = {handleBack}
+      
+                      getActiveNote = {getActiveNote}
+                      
+                      
+                      onChangeName = {onChangeName}
+                      onChangeEmail = {onChangeEmail}
+                      onChangeColor = {onChangeColor}
+                      userName = {userName}
+                      userEmail = {userEmail}
+                      userColor = {userColor}
+                      handleProfileSubmit = {handleProfileSubmit}
 
-
-
+                      notedisplay = {notedisplay} 
+                      setNoteDisplay = {setNoteDisplay}
+                      logindisplay = {logindisplay} 
+                      setLoginDisplay = {setLoginDisplay}
+                      handleLogout = {handleLogout}
+                      onEditName = {onEditName} 
+                      onEditEmail = {onEditEmail}
+            
+          
+          />
+        </div>
+         
   );
 }
 

@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 
 
-function PopupWindow({trigger, setTrigger, onChangeName, onChangeEmail, onChangeColor, userName, userEmail, userColor, handleProfileSubmit}) {
+function PopupWindow({trigger, setTrigger, onEditName, onEditEmail, onChangeColor, userName, userEmail, userColor, handleProfileSubmit,
+                      logindisplay, setLoginDisplay, notedisplay, setNoteDisplay, handleLogout}) {
+
     
     return (trigger) ? (
         <div className="background-window">
@@ -27,10 +29,10 @@ function PopupWindow({trigger, setTrigger, onChangeName, onChangeEmail, onChange
                 
                 
                     <label htmlFor="text"><b>Name</b></label>
-                    <input type="text" value = {userName} onChange = {onChangeName} placeholder="Enter name" name="name" required="" />
+                    <input type="text" value = {userName} onChange = {onEditName} placeholder="Enter name" name="name" required="" />
                     
                     <label htmlFor="email"><b>Email</b></label>
-                    <input type="text" value = {userEmail} onChange = {onChangeEmail} placeholder="Enter Email" name="email" required="" />
+                    <input type="text" value = {userEmail} onChange = {onEditEmail} placeholder="Enter Email" name="email" required="" />
                 
                     
                     
@@ -44,7 +46,7 @@ function PopupWindow({trigger, setTrigger, onChangeName, onChangeEmail, onChange
                 
                     <div className="clearfix">
                     <button type="submit" onClick={handleProfileSubmit} className="signupbtn">Save</button>
-                    <button type="button" className="cancelbtn">Log out</button>
+                    <button type="button" className="cancelbtn" onClick={handleLogout}>Log out</button>
                     
                     </div>
                 
