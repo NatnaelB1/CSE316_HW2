@@ -39,7 +39,7 @@ function MainArea ({notes, onDeleteNote, activeNote, setActiveNote, onEditNote, 
                 </div>
                 
                 <div className='Tag-area'>
-                    
+                { activeNote &&
                     <ReactTags
                     
                     handleDelete={handleDelete}
@@ -61,7 +61,7 @@ function MainArea ({notes, onDeleteNote, activeNote, setActiveNote, onEditNote, 
                     clearAll={false}
                     tags={tags}
                 />
-                    
+                }
                     
                 </div>
 

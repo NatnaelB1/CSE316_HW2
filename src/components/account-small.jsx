@@ -19,10 +19,10 @@ function SmallAccountWindow({loginpop , setLoginPop, handleSignin, onChangeName,
                     <input type="text" name="name" required=""  onChange = {onChangeName} />
                     
                     <label htmlFor="email"><b>Email</b></label>
-                    <input type="text" name="email" required=""  onChange = {onChangeEmail} />
+                    <input type="email" name="email" required=""  onChange = {onChangeEmail} />
 
                     <label htmlFor="text"><b>Password</b></label>
-                    <input type="password" name="password" required="" value = {userPassword} onChange = {onChangePassword}/>
+                    <input type="password" name="password" required="" onChange = {onChangePassword}/>
                 
                     {errorMessage && <div style={{color: 'red', padding: "5px"}}>Error: Invalid email and/or password</div>}
                     <div id='signbtn_div'>

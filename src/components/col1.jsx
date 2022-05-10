@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 
 
 function SideBar({notes, setTrigger, onAddNote, activeNote, setActiveNote, sidebarV, setSideBarV, mainAreaV, setMainAreaV, handlesearch, searchQuery,
-                 enabletags, setEnableTags  })  {
+                 enabletags, setEnableTags,handleImageSelected ,userPicture   })  {
     
     function multiple_onclick(n){
         setActiveNote(n);
@@ -21,7 +21,7 @@ function SideBar({notes, setTrigger, onAddNote, activeNote, setActiveNote, sideb
 
             <div className="profile-bar">
             
-                <button type="button" className="image-button" onClick={() => setTrigger(true)}> <img className="profile-image" src="assets/pro.webp" alt="Profile-image" /> </button>
+                <button type="button" className="image-button" onClick={() => setTrigger(true)}> <img className="profile-image" src={userPicture } alt="Profile-image" /> </button>
                 <span className="title-notes">My Notes</span>
                 <button className="material-button" id="material-button-noteadd" onClick={onAddNote} ><span className="material-icons">note_add</span></button>
             </div>

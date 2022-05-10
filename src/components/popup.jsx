@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 
 
 function PopupWindow({trigger, setTrigger, onEditName, onEditEmail, onChangeColor, userName, userEmail, userColor, handleProfileSubmit,
-                      logindisplay, setLoginDisplay, notedisplay, setNoteDisplay, handleLogout}) {
+                      logindisplay, setLoginDisplay, notedisplay, setNoteDisplay, handleLogout, handleImageSelected,userPicture,
+                      handleDeleteImage}) {
 
     
     return (trigger) ? (
@@ -20,11 +21,10 @@ function PopupWindow({trigger, setTrigger, onEditName, onEditEmail, onChangeColo
                     
                     
                     <div id="edit2">
-                    <img className="profile-image" src="assets/pro.webp" alt="Profile-image" />
-                    {/* <span><div className="popup-button" > Add new image </div></span> */}
+                    <img className="profile-image" src={userPicture} alt="Profile-image" />
                     
-                    <span><div className="popup-button"><label for="file-upload" class="custom-file-upload"> Add new image</label><input id="file-upload" type="file"/></div></span>
-                    <span><div className="popup-button">remove image </div></span>
+                    <span><div className="popup-button"><label for="file-upload" className="custom-file-upload"> Add new image</label><input id="file-upload" type="file" onChange={handleImageSelected}/></div></span>
+                    <span><div className="popup-button" onClick={handleDeleteImage}>remove image </div></span>
                     </div>
                     
                 

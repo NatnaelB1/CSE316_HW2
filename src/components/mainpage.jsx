@@ -7,8 +7,8 @@ function MainPage({buttonPopup, setButtonPopup, notes, setNotes, onAddNote, acti
                    handleDrag, handleTagClick, onClearAll, tags, setTags, sidebarV, setSideBarV, mainAreaV, setMainAreaV, handlesearch,
                    searchQuery, onDeleteNote, getActiveNote, onEditNote, get_Date, handleBack, onChangeName, onChangeEmail, onChangeColor,
                    userName, userEmail, userColor, handleProfileSubmit, notedisplay, setNoteDisplay, logindisplay, setLoginDisplay,
-                   handleLogout, onEditName, onEditEmail, enabletags, setEnableTags }){
-    return (notedisplay) ?(
+                   handleLogout, onEditName, onEditEmail, enabletags, setEnableTags, handleImageSelected ,userPicture, handleDeleteImage }){
+    return (notedisplay) ? (
         <div className="wrapper">
         
             <SideBar trigger={buttonPopup} 
@@ -36,7 +36,10 @@ function MainPage({buttonPopup, setButtonPopup, notes, setNotes, onAddNote, acti
                     searchQuery = {searchQuery}
                     enabletags = {enabletags}
                     setEnableTags = {setEnableTags}
-                    
+                   
+                    handleImageSelected = {handleImageSelected}
+                    userPicture={userPicture}
+            
                     
         
             />
@@ -81,6 +84,10 @@ function MainPage({buttonPopup, setButtonPopup, notes, setNotes, onAddNote, acti
                         handleLogout = {handleLogout}
                         onEditName = {onEditName} 
                         onEditEmail = {onEditEmail}
+
+                        handleImageSelected = {handleImageSelected}
+                        userPicture={userPicture}
+                        handleDeleteImage = {handleDeleteImage}
             
             >
                 

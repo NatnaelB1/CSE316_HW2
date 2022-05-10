@@ -9,6 +9,8 @@ import useWindowDimensions from './components/winsize';
 import LoginPage from './components/loginpage';
 import SmallLoginWindow from './components/login-small';
 import SmallAccountWindow from './components/account-small';
+import { uploadImageToCloudinaryAPIMethod } from './api/client';
+
 
 // import NewAccount from './components/account';
 // import LoginWindow from './components/login';
@@ -36,8 +38,10 @@ function App() {
   const [notedisplay, setNoteDisplay] = useState(false);
   const [logindisplay, setLoginDisplay] = useState(true);
   const [enabletags, setEnableTags] = useState(false);
+
+  const [activeuser, setActiveUser] = useState("");
   
-  const [userPicture, setUserPicture] = useState("");
+  const [userPicture, setUserPicture] = useState("http://res.cloudinary.com/natialemu47/image/upload/v1652196653/dnt17uj4nl9ywfq648v8.jpg");
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////USERS////////////////////////////////////////////////////////////////// 
@@ -64,13 +68,13 @@ function App() {
   const onEditEmail = e => {
     setUserEmail(e.target.value);
   }
-  
 
   const onChangePassword = e => {
     setUserPassword(e.target.value);
     
   }
   const user = {
+    id:activeuser,
     username: userName, 
     useremail: userEmail,
     userpassword: userPassword,
@@ -83,8 +87,9 @@ function App() {
     e.preventDefault();
     setButtonPopup(false);
     console.log(user);
-    axios.put('/edit', user)
-      .then(res => console.log(res.data)); 
+    axios.put('/edit/'+ activeuser, user)
+      .then(res => console.log(res.data))
+      .catch(e=> console.log(e))
 
   }
 
@@ -103,18 +108,24 @@ function App() {
       });
   }
   
+  
   const handlelogin = (e) => {
     e.preventDefault();
     axios.post('/login', user)
       .then(function (res){
         console.log("Successful login");
-
+        setActiveUser(res.data.userId);
+        setUsername(res.data.username);
+        setUserEmail(res.data.useremail);
+        setUserColor(res.data.usercolor);
+        setUserPicture(res.data.userpicture)
         setErrorMessage(false);
         setNoteDisplay(true);
         setLoginDisplay(false);  
         setButtonPopup(false);
         axios.get('/notes').then(res => {
           setNotes(res.data)
+          notes[0] && setActiveNote(notes[0]);
         }  
         );   
   
@@ -132,12 +143,54 @@ function App() {
         console.log("Successful logout");
         setLoginDisplay(true);
         setNoteDisplay(false);
+        setActiveUser("");
+        window.location.reload();
       })
       .catch((err) =>{
         console.log("Unsuccessful logout");
       });
+
+  
     
     
+}
+
+const handleDeleteImage=(e)=>{
+  e.preventDefault();
+  setUserPicture("http://res.cloudinary.com/natialemu47/image/upload/v1652196653/dnt17uj4nl9ywfq648v8.jpg")
+}
+
+const handleImageSelected = (event) => {
+  console.log("New File Selected");
+  if (event.target.files && event.target.files[0]) {
+
+      // Could also do additional error checking on the file type, if we wanted
+      // to only allow certain types of files.
+      const selectedFile = event.target.files[0];
+      console.dir(selectedFile);
+
+      const formData = new FormData();
+      // TODO: You need to create an "unsigned" upload preset on your Cloudinary account
+      // Then enter the text for that here.
+      const unsignedUploadPreset = 'mftlkxf6'
+      formData.append('file', selectedFile);
+      formData.append('upload_preset', unsignedUploadPreset);
+
+      console.log("Cloudinary upload");
+      uploadImageToCloudinaryAPIMethod(formData)
+      .then((response) => {
+          console.log("Upload success");
+          console.dir(response);
+          setUserPicture(response.url);
+          console.log(response.url)
+          // Now the URL gets saved to the author
+          const updatedUser = {...user, "userpicture": response.url};
+          
+
+          // Now we want to make sure this is updated on the server – either the
+          // user needs to click the submit button, or we could trigger the server call here
+      });
+  }
 }
  //////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////DATE//////////////////////////////////////////////////////////////////   
@@ -370,6 +423,9 @@ const onAddNote = () => {
               handleLogout = {handleLogout}
               onEditName = {onEditName} 
               onEditEmail = {onEditEmail}
+              handleImageSelected = {handleImageSelected}
+              userPicture={userPicture}
+              handleDeleteImage = {handleDeleteImage}
           />
         ); 
       }
@@ -522,7 +578,9 @@ const onAddNote = () => {
                       onEditEmail = {onEditEmail}
                       enabletags = {enabletags}
                       setEnableTags = {setEnableTags}
-            
+                      handleImageSelected = {handleImageSelected}
+                      userPicture={userPicture}
+                      handleDeleteImage = {handleDeleteImage}
           
           />
         </div>

@@ -24,7 +24,7 @@ function NewAccount({loginpop , setLoginPop, handleSignin, onChangeName,  onChan
                     <input type="text" name="email" required=""  onChange = {onChangeEmail} />
 
                     <label htmlFor="text"><b>Password</b></label>
-                    <input type="password" name="password" required="" value = {userPassword} onChange = {onChangePassword}/>
+                    <input type="password" name="password" required="" onChange = {onChangePassword}/>
                 
                     {errorMessage && <div style={{color: 'red', padding: "5px"}}>Error: Invalid email and/or password</div>}
                     <div id='signbtn_div'>
