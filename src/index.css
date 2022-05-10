@@ -126,5 +126,19 @@ hr{
 
 }
 
+#small_account_window{
+  display: flex;
+}
 
+#newAccount_input2{
+  border: none;
+  display: flex;
+}
 
+#login_input2{
+  display: flex;
+}
+
+#file-upload{
+  display: none;
+}

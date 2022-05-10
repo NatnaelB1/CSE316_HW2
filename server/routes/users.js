@@ -21,8 +21,8 @@ router.post('/users/:id/file', upload.single('image'), wrapAsync(async function 
 
 
 router.post('/register', wrapAsync(async function (req, res) {
-    const {userpassword, useremail, username, usercolor} = req.body;
-    const user = new User({useremail, userpassword, username, usercolor})
+    const {userpassword, useremail, username, usercolor, userpicture} = req.body;
+    const user = new User({useremail, userpassword, username, usercolor, userpicture})
     await user.save();
     req.session.userId = user._id;
     // Note: this is returning the entire user object to demo, which will include the hashed and salted password.
@@ -48,59 +48,5 @@ router.post('/logout', wrapAsync(async function (req, res) {
     console.log("Succesfully logged out!");
     res.sendStatus(204);
 }));
-
-
-// router.get('/', async function (req,res) {
-//     const users = await User.find({});
-//     res.json(users[0]);
-// });
-
-// router.post('users/add', async function (req,res) {
-//   console.log("Posted with body: " + JSON.stringify(req.body));
-
-//   const newUser = new User({
-//       username : req.body.username,
-//       useremail : req.body.useremail,
-//       usercolor : req.body.usercolor,
-//       userpassword: req.body.userpassword,
-//   });
-//   await newUser.save();
-//   res.json(newUser);
-// });
-
-// router.put('users/:id', async function (req,res) {
-//   let id = req.params.id;
-//   console.log("PUT with id: " + id + ", body: " + JSON.stringify(req.body));
-//   // This below method automatically saves it to the database
-//   User.findByIdAndUpdate(id,
-//       {'username': req.body.username, "useremail": req.body.useremail, "usercolor": req.body.usercolor, "userpassword": req.body.userpassword},
-//       function (err, result) {
-//           if (err) {
-//               console.log("ERROR: " + err);
-//               res.send(err);
-//           } else {
-//               // Status 204 represents success with no content
-//               // https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/204
-//               res.sendStatus(204);
-//           }
-//       });
-// });
-// router.delete('users/:id', async function (req,res) {
-//     const id = req.params.id;
-//     User.findByIdAndDelete(id,
-//         null,
-//         function (error, result) {
-//             if (error) {
-//                 console.log("ERROR: " + error);
-//                 res.status(404).send(error.message);
-//             } else {
-//                 console.log("Deleted successfully: " + result);
-//                 // Status 204 represents success with no content
-//                 // https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/204
-//                 res.sendStatus(204);
-//             }
-//         });
-//   });
-
 
 module.exports = router;

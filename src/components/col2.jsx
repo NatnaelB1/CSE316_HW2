@@ -3,7 +3,7 @@ import { WithContext as ReactTags } from 'react-tag-input'
 
 
 function MainArea ({notes, onDeleteNote, activeNote, setActiveNote, onEditNote, get_Date, handleDelete, handleAddition, handleDrag,
-                    handleTagClick, onTagUpdate, tags , handleBack , mainAreaV, setMainAreaV, getActiveNote }){
+                    handleTagClick, onTagUpdate, tags , handleBack , mainAreaV, setMainAreaV, getActiveNote, enabletags, setEnableTags }){
     
     const onUpdateNotes = (value) => {
         onEditNote({
@@ -32,9 +32,10 @@ function MainArea ({notes, onDeleteNote, activeNote, setActiveNote, onEditNote, 
             <div className='mainn'>
 
                 <div className='mainn2'>
-                    <textarea className="paragraph_text" value = {activeNote.notebody} onChange={(e) => onUpdateNotes(e.target.value) }> 
+                  { !activeNote && <textarea className="paragraph_text" > </textarea>}  
+                  { activeNote && <textarea className="paragraph_text" value = {activeNote.notebody} onChange={(e) => onUpdateNotes(e.target.value) }> 
                     
-                    </textarea>
+                    </textarea>}
                 </div>
                 
                 <div className='Tag-area'>

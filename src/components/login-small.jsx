@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
 
-
-function LoginWindow({loginpop , setLoginPop, onChangeEmail, onChangePassword, handlelogin, authorized, setAuthorized,
-                    errorMessage, setErrorMessage}){
+function SmallLoginWindow({loginpop , setLoginPop, onChangeEmail, onChangePassword, handlelogin, authorized, setAuthorized,
+    errorMessage, setErrorMessage}) {
     
-    return (
-        <div className='loginwindow'>
+    return(
+        <div id='small_login'> 
             <div className='login_header'>
                 <h1 id='login_h1'>Notes</h1>
                 <h3 className='login_h3'>Organize all your thoughts in one place.</h3>
             </div> 
-            <div className='login_input' >
+            <div className='login_input2' >
         
                 <form action="action_page.php">
                 <div className="login_container">
@@ -40,5 +39,4 @@ function LoginWindow({loginpop , setLoginPop, onChangeEmail, onChangePassword, h
         </div>
     );
 }
-//}
-export default LoginWindow;
+export default SmallLoginWindow;

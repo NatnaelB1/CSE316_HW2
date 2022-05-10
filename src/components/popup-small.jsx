@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
-function SmallPopupWindow ({onChangeName, onChangeEmail, onChangeColor, userName, userEmail, userColor, handleProfileSubmit})
+function SmallPopupWindow ({onChangeName, onChangeEmail, onChangeColor, userName, userEmail, userColor, handleProfileSubmit,
+                            logindisplay, setLoginDisplay, notedisplay, setNoteDisplay, handleLogout})
 {
     return(
         <div className="pop-up-small">
@@ -40,7 +41,7 @@ function SmallPopupWindow ({onChangeName, onChangeEmail, onChangeColor, userName
               
                   <div className="clearfix">
                   <button type="submit" onClick={handleProfileSubmit} className="signupbtn">Save</button>
-                  <button type="button" className="cancelbtn">Log out</button>
+                  <button type="button" className="cancelbtn" onClick={handleLogout}>Log out</button>
                   
                   </div>
               

@@ -21,6 +21,8 @@ var userSchema = new Schema(
         type:String,
         required:true,
         minlength: 6},
+    userpicture: {
+        type: String}
     }
 );
 

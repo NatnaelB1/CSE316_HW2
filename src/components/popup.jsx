@@ -21,7 +21,9 @@ function PopupWindow({trigger, setTrigger, onEditName, onEditEmail, onChangeColo
                     
                     <div id="edit2">
                     <img className="profile-image" src="assets/pro.webp" alt="Profile-image" />
-                    <span><div className="popup-button" >Add new image </div></span>
+                    {/* <span><div className="popup-button" > Add new image </div></span> */}
+                    
+                    <span><div className="popup-button"><label for="file-upload" class="custom-file-upload"> Add new image</label><input id="file-upload" type="file"/></div></span>
                     <span><div className="popup-button">remove image </div></span>
                     </div>
                     

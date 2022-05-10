@@ -7,7 +7,7 @@ function MainPage({buttonPopup, setButtonPopup, notes, setNotes, onAddNote, acti
                    handleDrag, handleTagClick, onClearAll, tags, setTags, sidebarV, setSideBarV, mainAreaV, setMainAreaV, handlesearch,
                    searchQuery, onDeleteNote, getActiveNote, onEditNote, get_Date, handleBack, onChangeName, onChangeEmail, onChangeColor,
                    userName, userEmail, userColor, handleProfileSubmit, notedisplay, setNoteDisplay, logindisplay, setLoginDisplay,
-                   handleLogout, onEditName, onEditEmail }){
+                   handleLogout, onEditName, onEditEmail, enabletags, setEnableTags }){
     return (notedisplay) ?(
         <div className="wrapper">
         
@@ -34,6 +34,8 @@ function MainPage({buttonPopup, setButtonPopup, notes, setNotes, onAddNote, acti
 
                     handlesearch = {handlesearch}
                     searchQuery = {searchQuery}
+                    enabletags = {enabletags}
+                    setEnableTags = {setEnableTags}
                     
                     
         
@@ -56,6 +58,8 @@ function MainPage({buttonPopup, setButtonPopup, notes, setNotes, onAddNote, acti
                     mainAreaV = {mainAreaV}
                     setMainAreaV = {setMainAreaV}
                     getActiveNote = {getActiveNote}
+                    enabletags = {enabletags}
+                    setEnableTags = {setEnableTags}
                     
                     
             />

@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 
 
 
-function SideBar({notes, setTrigger, onAddNote, activeNote, setActiveNote, sidebarV, setSideBarV, mainAreaV, setMainAreaV, handlesearch, searchQuery})  {
+function SideBar({notes, setTrigger, onAddNote, activeNote, setActiveNote, sidebarV, setSideBarV, mainAreaV, setMainAreaV, handlesearch, searchQuery,
+                 enabletags, setEnableTags  })  {
     
     function multiple_onclick(n){
         setActiveNote(n);

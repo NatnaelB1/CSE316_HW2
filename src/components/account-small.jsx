@@ -1,17 +1,15 @@
 import React, { Component } from 'react';
 
-function NewAccount({loginpop , setLoginPop, handleSignin, onChangeName,  onChangeEmail, userName, userEmail, userPassword,
-                      onChangePassword, errorMessage, setErrorMessage  }){
-    return (loginpop) ? (
+function SmallAccountWindow({loginpop , setLoginPop, handleSignin, onChangeName,  onChangeEmail, userName, userEmail, userPassword,
+    onChangePassword, errorMessage, setErrorMessage  }) {
+    return(
+        <div id='small_account_window'>
 
-        <div id='login_popup'>
+            <div id='newAccount_input2'>
             
-       
-            <div className='newAccount_input'>
-            
-                <form >
+            <form >
                 <div>
-                    
+                
                     <div id='signup_top'>
                         <div><h3>Sign Up</h3></div>
                         <div id='x_button' onClick={() => setLoginPop(false)}> X </div>
@@ -30,14 +28,12 @@ function NewAccount({loginpop , setLoginPop, handleSignin, onChangeName,  onChan
                     <div id='signbtn_div'>
                     <button className='dlt_btn' type="submit" onClick={handleSignin}>Sign Up</button>    
                     </div>
-                
+            
                 </div>
-                </form>
+            </form>
 
-            </div>
         </div>
-
-    ): "";
+        </div>
+    );
 }
-
-export default NewAccount;
+export default SmallAccountWindow;

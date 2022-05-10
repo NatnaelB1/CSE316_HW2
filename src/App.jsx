@@ -1,5 +1,5 @@
 
-// import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router-dom'
+
 import MainPage from './components/mainpage';
 import SideBar from './components/col1';
 import MainArea from './components/col2';
@@ -7,8 +7,8 @@ import PopupWindow from './components/popup';
 import SmallPopupWindow from './components/popup-small';
 import useWindowDimensions from './components/winsize';
 import LoginPage from './components/loginpage';
-//import {useHistory} from "react-router-dom";
-// import createBrowserHistory from 'history/createBrowserHistory';
+import SmallLoginWindow from './components/login-small';
+import SmallAccountWindow from './components/account-small';
 
 // import NewAccount from './components/account';
 // import LoginWindow from './components/login';
@@ -35,39 +35,13 @@ function App() {
 
   const [notedisplay, setNoteDisplay] = useState(false);
   const [logindisplay, setLoginDisplay] = useState(true);
-
+  const [enabletags, setEnableTags] = useState(false);
   
+  const [userPicture, setUserPicture] = useState("");
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////USERS////////////////////////////////////////////////////////////////// 
   
-  // //gets username from the database
-  // useEffect(()=>{
-  //   axios.get('/users').then(res => {
-  //     let un = userName.concat(res.data.username);
-  //     setUsername(un)
-  //   }  
-  //   )
-    
-  // },[])
-  // //gets useremail from the database
-  // useEffect(()=>{
-  //   axios.get('/users').then(res => {
-  //     let ue = userEmail.concat(res.data.useremail);
-  //     setUserEmail(ue)
-  //   }  
-  //   )
-    
-  // },[])
-  // //gets usercolorscheme for the database
-  // useEffect(()=>{
-  //   axios.get('/users').then(res => {
-  //     let uc = userColor.concat(res.data.usercolor);
-  //     setUserColor(uc)
-  //   }  
-  //   )
-    
-  // },[])
   //sets the value of username based on keyboard input
   const onChangeName = e => {
     setUsername(e.target.value);
@@ -100,7 +74,8 @@ function App() {
     username: userName, 
     useremail: userEmail,
     userpassword: userPassword,
-    usercolor: userColor
+    usercolor: userColor,
+    userpicture: userPicture
     
   };
   //saves user to the database
@@ -116,7 +91,16 @@ function App() {
   const handleSignin = (e) => {
     e.preventDefault();
     axios.post('/register', user)
-      .then(res => console.log(res.data));
+      .then(function (res){  
+        console.log(res.data);
+        setErrorMessage(false);
+        setLoginPop(false);
+        console.log("Successful signin");
+      
+      }).catch((err)=>{
+        console.log("signin error Message");
+        setErrorMessage(true);
+      });
   }
   
   const handlelogin = (e) => {
@@ -127,11 +111,16 @@ function App() {
 
         setErrorMessage(false);
         setNoteDisplay(true);
-        setLoginDisplay(false);      
+        setLoginDisplay(false);  
+        setButtonPopup(false);
+        axios.get('/notes').then(res => {
+          setNotes(res.data)
+        }  
+        );   
   
       }) 
       .catch((err)=> {
-        console.log("errorMessage");
+        console.log("login error Message");
         setErrorMessage(true);
       });
   }
@@ -172,15 +161,15 @@ function App() {
 
 const [notes, setNotes] = useState([{id: 0, forsort: Date.now(), notebody: "This is a note with a long line of text. This note is a static(placeholder)", lastModified: get_Date(), note_tag: [{id:"cse" ,text:"cse"}]}]);
 
-//gets notes from the database
-useEffect(()=>{
-  axios.get('/notes').then(res => {
-    let n = notes.concat(res.data);
-    setNotes(n)
-  }  
-  )
+// //gets notes from the database
+// useEffect(()=>{
+//   axios.get('/notes').then(res => {
+//     //let n = notes.concat(res.data);
+//     setNotes(res.data)
+//   }  
+//   )
   
-},[])
+// },[])
 
 //adding a new note
 const onAddNote = () => {
@@ -199,11 +188,9 @@ const onAddNote = () => {
   axios.post('/notes', newNote)
       .then(res => console.log(res.data));
 
-  // window.location.reload();
-
 } 
  
-  const [activeNote, setActiveNote] = useState(notes[0].id);
+  const [activeNote, setActiveNote] = useState(notes.length>0 && notes[0].id || null);
   
   //gets active note
   const getActiveNote = () => {
@@ -211,21 +198,20 @@ const onAddNote = () => {
   }
   //Finding the activenote for tags
   useEffect(() => {
-    setTags(getActiveNote().note_tag);
+    enabletags && setTags(getActiveNote().note_tag);
   }, [activeNote]); 
   
   
-  const [tags, setTags] = useState(getActiveNote().note_tag);
+  const [tags, setTags] = useState([{id : "cse", text: "cse"}]);
   
   //note delete
   const onDeleteNote = (DelTarget_note) => {
-    if (notes.length === 1){
-      return "";
-    }
+    
   
     axios.delete('/notes/' + getActiveNote().id)
       .then(res => console.log(res.data));
 
+     
     if (DelTarget_note !== notes[0].id){
       setNotes(notes.filter((note) => note.id !== DelTarget_note ));
       return setActiveNote(notes[0].id); 
@@ -322,83 +308,132 @@ const onAddNote = () => {
                 
   
   if (width <= 500){
-    if(buttonPopup === true){
+    if(logindisplay === true && notedisplay === false){
+      if(loginpop === false){
+        return(
+          <SmallLoginWindow
+              loginpop = {loginpop}
+              setLoginPop = {setLoginPop}
+
+              onChangeEmail = {onChangeEmail}
+              onChangePassword = {onChangePassword}
+              handlelogin = {handlelogin}
+              authorized = {authorized}
+              setAuthorized = {setAuthorized}
+              errorMessage = {errorMessage}
+              setErrorMessage = {setErrorMessage}
+          />
+        );
+
+      }else{
+        return(
+          <SmallAccountWindow
+              loginpop = {loginpop}
+              setLoginPop = {setLoginPop}
+              handleSignin = {handleSignin}
+
+              onChangeName = {onChangeName}
+              onChangeEmail = {onChangeEmail}
+              onChangeColor = {onChangeColor}
+              onChangePassword = {onChangePassword}
+
+              userName = {userName}
+              userEmail = {userEmail}
+              userPassword = {userPassword}
+
+              errorMessage = {errorMessage}
+              setErrorMessage = {setErrorMessage}
+          
+          />
+        );
+      }
+    }else if(logindisplay === false && notedisplay === true){
+      if(buttonPopup === true){
       
-      return (
-        <SmallPopupWindow 
+        return (
+          <SmallPopupWindow 
+  
+              trigger={buttonPopup} 
+              setTrigger = {setButtonPopup}
+              onChangeName = {onChangeName}
+              onChangeEmail = {onChangeEmail}
+              onChangeColor = {onChangeColor}
+              userName = {userName}
+              userEmail = {userEmail}
+              userColor = {userColor}
+              handleProfileSubmit = {handleProfileSubmit}
 
-                     onChangeName = {onChangeName}
-                     onChangeEmail = {onChangeEmail}
-                     onChangeColor = {onChangeColor}
-                     userName = {userName}
-                     userEmail = {userEmail}
-                     userColor = {userColor}
-                     handleProfileSubmit = {handleProfileSubmit}
-        
-        
-        />
-      ); 
+              notedisplay = {notedisplay} 
+              setNoteDisplay = {setNoteDisplay}
+              logindisplay = {logindisplay} 
+              setLoginDisplay = {setLoginDisplay}
+              handleLogout = {handleLogout}
+              onEditName = {onEditName} 
+              onEditEmail = {onEditEmail}
+          />
+        ); 
+      }
+      
+      if(sidebarV === true && mainAreaV == false && buttonPopup === false){
+        return(
+          <SideBar 
+              trigger={buttonPopup} 
+              setTrigger = {setButtonPopup} 
+              notes = {notes.filter((note) => note.notebody.toLowerCase().includes(searchQuery.toLowerCase()))} 
+              setNotes = {setNotes}
+              onAddNote = {onAddNote}
+              activeNote = {activeNote}
+              setActiveNote = {setActiveNote}
+              
+              handleDelete={handleDelete}
+              handleAddition={handleAddition}
+              handleDrag={handleDrag}
+              handleTagClick={handleTagClick}
+              onClearAll = {onClearAll}
+              tags ={tags}
+              setTags = {setTags}
+
+              sidebarV = {sidebarV} 
+              setSideBarV = {setSideBarV}
+              mainAreaV = {mainAreaV}
+              setMainAreaV = {setMainAreaV}
+
+              handlesearch = {handlesearch}
+              searchQuery = {searchQuery}
+              enabletags = {enabletags}
+              setEnableTags = {setEnableTags}
+
+          />
+        );
+      }
+      if(sidebarV === true && mainAreaV === true){
+        return(
+          <MainArea 
+              onDeleteNote = {onDeleteNote}  
+              activeNote = {getActiveNote()}
+              onEditNote = {onEditNote}
+              get_Date = {get_Date}
+              handleBack = {handleBack}
+
+              handleDelete={handleDelete}
+              handleAddition={handleAddition}
+              handleDrag={handleDrag}
+              handleTagClick={handleTagClick}
+              onClearAll = {onClearAll}
+              tags ={tags}
+              setTags = {setTags}
+
+              mainAreaV = {mainAreaV}
+              setMainAreaV = {setMainAreaV}
+              getActiveNote = {getActiveNote}
+              enabletags = {enabletags}
+              setEnableTags = {setEnableTags}
+                    
+          />
+        );
+      }
 
     }
-    
-    if(sidebarV === true && mainAreaV == false && buttonPopup === false){
-      return(
-        <SideBar trigger={buttonPopup} 
-                 setTrigger = {setButtonPopup} 
-                 notes = {notes.filter((note) => note.notebody.toLowerCase().includes(searchQuery.toLowerCase()))} 
-                 setNotes = {setNotes}
-                 onAddNote = {onAddNote}
-                 activeNote = {activeNote}
-                 setActiveNote = {setActiveNote}
-                 
-                 handleDelete={handleDelete}
-                 handleAddition={handleAddition}
-                 handleDrag={handleDrag}
-                 handleTagClick={handleTagClick}
-                 onClearAll = {onClearAll}
-                 tags ={tags}
-                 setTags = {setTags}
-
-                 sidebarV = {sidebarV} 
-                 setSideBarV = {setSideBarV}
-                 mainAreaV = {mainAreaV}
-                setMainAreaV = {setMainAreaV}
-                handlesearch = {handlesearch}
-                searchQuery = {searchQuery}
-                 
-                 
-       
-        />
-
-      );
-    }
-    if(sidebarV === true && mainAreaV === true){
-      return(
-        <MainArea onDeleteNote = {onDeleteNote}  
-                  activeNote = {getActiveNote()}
-                  onEditNote = {onEditNote}
-                  get_Date = {get_Date}
-                  handleBack = {handleBack}
-
-                  handleDelete={handleDelete}
-                  handleAddition={handleAddition}
-                  handleDrag={handleDrag}
-                  handleTagClick={handleTagClick}
-                  onClearAll = {onClearAll}
-                  tags ={tags}
-                  setTags = {setTags}
-
-                  mainAreaV = {mainAreaV}
-                  setMainAreaV = {setMainAreaV}
-                  getActiveNote = {getActiveNote}
-                 
-                  
-        />
-
-      );
-    }
-     
-    
         
   } 
   
@@ -485,6 +520,8 @@ const onAddNote = () => {
                       handleLogout = {handleLogout}
                       onEditName = {onEditName} 
                       onEditEmail = {onEditEmail}
+                      enabletags = {enabletags}
+                      setEnableTags = {setEnableTags}
             
           
           />

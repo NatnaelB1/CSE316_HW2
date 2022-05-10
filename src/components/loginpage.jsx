@@ -33,6 +33,9 @@ function LoginPage({setLoginPop, loginpop, handleSignin, onChangeName, onChangeE
                 userName = {userName}
                 userEmail = {userEmail}
                 userPassword = {userPassword}
+
+                errorMessage = {errorMessage}
+                setErrorMessage = {setErrorMessage}
             />
         </div>
         
