@@ -132,7 +132,9 @@ function App() {
         setErrorMessage(true);
       });
   }
-  
+  useEffect(()=>{
+    notes[0] && setActiveNote(notes[0].id)
+  },[activeuser])
   
   
   const handlelogin = (e) => {
@@ -155,6 +157,7 @@ function App() {
 
           notes[0]&&setActiveNote(notes[0].id);
           console.log(notes[0].id+"#######")
+          setActiveUser(activeuser)
         }  
         );   
   
