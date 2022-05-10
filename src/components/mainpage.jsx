@@ -7,7 +7,8 @@ function MainPage({buttonPopup, setButtonPopup, notes, setNotes, onAddNote, acti
                    handleDrag, handleTagClick, onClearAll, tags, setTags, sidebarV, setSideBarV, mainAreaV, setMainAreaV, handlesearch,
                    searchQuery, onDeleteNote, getActiveNote, onEditNote, get_Date, handleBack, onChangeName, onChangeEmail, onChangeColor,
                    userName, userEmail, userColor, handleProfileSubmit, notedisplay, setNoteDisplay, logindisplay, setLoginDisplay,
-                   handleLogout, onEditName, onEditEmail, enabletags, setEnableTags, handleImageSelected ,userPicture, handleDeleteImage }){
+                   handleLogout, onEditName, onEditEmail, enabletags, setEnableTags, handleImageSelected ,userPicture, handleDeleteImage,
+                   relatedNotes  }){
     return (notedisplay) ? (
         <div className="wrapper">
         
@@ -39,7 +40,7 @@ function MainPage({buttonPopup, setButtonPopup, notes, setNotes, onAddNote, acti
                    
                     handleImageSelected = {handleImageSelected}
                     userPicture={userPicture}
-            
+                    relatedNotes = {relatedNotes}
                     
         
             />

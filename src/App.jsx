@@ -10,16 +10,36 @@ import LoginPage from './components/loginpage';
 import SmallLoginWindow from './components/login-small';
 import SmallAccountWindow from './components/account-small';
 import { uploadImageToCloudinaryAPIMethod } from './api/client';
+import { loadModel } from './universalSentenceEncoder';
+import { determineRelatednessOfSentences } from './universalSentenceEncoder';
 
-
-// import NewAccount from './components/account';
-// import LoginWindow from './components/login';
 import axios, { Axios } from 'axios';
 
 import { useState, useLayoutEffect, useEffect, Fragment } from 'react';
 import { WithContext as ReactTags } from 'react-tag-input'
 
+loadModel();
+
 function App() {
+
+   ///////////////////////////////////////DATE//////////////////////////////////////////////////////////////////   
+  //recieves the date and puts it in the specified format
+  const get_Date = () => {
+
+    var today = new Date();
+    let day = today.getDate();
+    let month = today.getMonth();
+    let year = today.getFullYear();
+    let hour = today.getHours()% 12 || 12;
+    let min = today.getMinutes() < 10 ? '0' + today.getMinutes() : today.getMinutes();
+    let sec = today.getSeconds() < 10 ? '0' + today.getSeconds() : today.getSeconds();
+    let ampm = today.getHours() >= 12 ? 'pm' : 'am';
+    var final_date = month +"/"+ day +"/"+year+", " +hour+':'+min+':'+ sec + " "+ ampm;
+    return final_date;
+  }
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
   const [buttonPopup, setButtonPopup] = useState(false);
   
   const [loginpop, setLoginPop] = useState(false);
@@ -42,6 +62,11 @@ function App() {
   const [activeuser, setActiveUser] = useState("");
   
   const [userPicture, setUserPicture] = useState("http://res.cloudinary.com/natialemu47/image/upload/v1652196653/dnt17uj4nl9ywfq648v8.jpg");
+
+  const [relatedNotes, setRelatedNotes] = useState([]);
+
+  const [notes, setNotes] = useState([]);
+  const [activeNote, setActiveNote] = useState(notes.length>0 && notes[0].id || null);
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////USERS////////////////////////////////////////////////////////////////// 
@@ -109,6 +134,7 @@ function App() {
   }
   
   
+  
   const handlelogin = (e) => {
     e.preventDefault();
     axios.post('/login', user)
@@ -125,7 +151,10 @@ function App() {
         setButtonPopup(false);
         axios.get('/notes').then(res => {
           setNotes(res.data)
-          notes[0] && setActiveNote(notes[0]);
+          console.log('Im here')
+
+          notes[0]&&setActiveNote(notes[0].id);
+          console.log(notes[0].id+"#######")
         }  
         );   
   
@@ -193,26 +222,9 @@ const handleImageSelected = (event) => {
   }
 }
  //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////DATE//////////////////////////////////////////////////////////////////   
-  //recieves the date and puts it in the specified format
-  const get_Date = () => {
-
-    var today = new Date();
-    let day = today.getDate();
-    let month = today.getMonth();
-    let year = today.getFullYear();
-    let hour = today.getHours()% 12 || 12;
-    let min = today.getMinutes() < 10 ? '0' + today.getMinutes() : today.getMinutes();
-    let sec = today.getSeconds() < 10 ? '0' + today.getSeconds() : today.getSeconds();
-    let ampm = today.getHours() >= 12 ? 'pm' : 'am';
-    var final_date = month +"/"+ day +"/"+year+", " +hour+':'+min+':'+ sec + " "+ ampm;
-    return final_date;
-  }
-
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ 
   ///////////////////////////////////////NOTES////////////////////////////////////////////////////////////////// 
 
-const [notes, setNotes] = useState([{id: 0, forsort: Date.now(), notebody: "This is a note with a long line of text. This note is a static(placeholder)", lastModified: get_Date(), note_tag: [{id:"cse" ,text:"cse"}]}]);
 
 // //gets notes from the database
 // useEffect(()=>{
@@ -223,6 +235,7 @@ const [notes, setNotes] = useState([{id: 0, forsort: Date.now(), notebody: "This
 //   )
   
 // },[])
+
 
 //adding a new note
 const onAddNote = () => {
@@ -243,7 +256,7 @@ const onAddNote = () => {
 
 } 
  
-  const [activeNote, setActiveNote] = useState(notes.length>0 && notes[0].id || null);
+ 
   
   //gets active note
   const getActiveNote = () => {
@@ -251,6 +264,7 @@ const onAddNote = () => {
   }
   //Finding the activenote for tags
   useEffect(() => {
+     similarNotes();
     enabletags && setTags(getActiveNote().note_tag);
   }, [activeNote]); 
   
@@ -296,6 +310,35 @@ const onAddNote = () => {
     setSearchQuery(newSearchQuery);
   }
   
+  const similarNotes = () => {
+    const index = notes.findIndex(note => 
+      note.id === activeNote
+    ); 
+   
+    const note_body = notes.map(note => {
+      return note.notebody;
+    })
+    
+    determineRelatednessOfSentences(note_body,index)
+    .then(
+      result => {
+        const related_notes = result.map(n => {
+            if(n.score > 0.5){
+               return notes[n.indexOne].id;
+            }
+
+        }
+        )
+        console.log(related_notes)
+      setRelatedNotes(related_notes);
+      }
+
+       
+    )
+    .catch ((e)=>
+            console.log(e)
+    );
+ }
 
    //////////////////////////////////////////////////////////////////////////////////////////////////////////////
    ///////////////////////////////////////TAGS///////////////////////////////////////////////////////////////////
@@ -458,6 +501,8 @@ const onAddNote = () => {
               searchQuery = {searchQuery}
               enabletags = {enabletags}
               setEnableTags = {setEnableTags}
+              relatedNotes = {relatedNotes}
+              userPicture={userPicture}
 
           />
         );
@@ -581,6 +626,7 @@ const onAddNote = () => {
                       handleImageSelected = {handleImageSelected}
                       userPicture={userPicture}
                       handleDeleteImage = {handleDeleteImage}
+                      relatedNotes = {relatedNotes}
           
           />
         </div>

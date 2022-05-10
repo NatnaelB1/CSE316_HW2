@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 
 
 function SideBar({notes, setTrigger, onAddNote, activeNote, setActiveNote, sidebarV, setSideBarV, mainAreaV, setMainAreaV, handlesearch, searchQuery,
-                 enabletags, setEnableTags,handleImageSelected ,userPicture   })  {
+                 enabletags, setEnableTags,handleImageSelected ,userPicture, relatedNotes })  {
     
     function multiple_onclick(n){
         setActiveNote(n);
@@ -34,15 +34,18 @@ function SideBar({notes, setTrigger, onAddNote, activeNote, setActiveNote, sideb
             
             {sortedNotes.map((note) => (
             
-                <div className= {`note-display  ${note.id === activeNote && "active" }`}  key = {`${note.id}`}    id = {`${note.id}`}
+                <div className= {`note-display  ${note.id === activeNote && "active" || relatedNotes.includes(note.id) && "similar" }`}  key = {`${note.id}`}    id = {`${note.id}`}
                     onClick={ () => {
                         multiple_onclick(note.id)                        
                     }}>
                     <div className='side-title'>
                         {note.notebody === "" ? "Add a Note" : note.notebody}
                     </ div>
+                    <div id='footer_div'>
+                        <small className='footer'> {note.lastModified} </small>
+                        {relatedNotes.includes(note.id) && (note.id !== activeNote ) && <small className='footer'>similar</small>}
+                    </div>
                     
-                    <small> {note.lastModified} </small>
                         
                 </div>
 
