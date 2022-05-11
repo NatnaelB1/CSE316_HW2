@@ -21,7 +21,7 @@ function NewAccount({loginpop , setLoginPop, handleSignin, onChangeName,  onChan
                     <input type="text" name="name" required=""  onChange = {onChangeName} />
                     
                     <label htmlFor="email"><b>Email</b></label>
-                    <input type="text" name="email" required=""  onChange = {onChangeEmail} />
+                    <input className='emailbox'  type="text" name="email" required=""  onChange = {onChangeEmail} />
 
                     <label htmlFor="text"><b>Password</b></label>
                     <input type="password" name="password" required="" onChange = {onChangePassword}/>

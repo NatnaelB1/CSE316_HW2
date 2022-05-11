@@ -16,10 +16,10 @@ function SmallAccountWindow({loginpop , setLoginPop, handleSignin, onChangeName,
                     </div>
                     
                     <label htmlFor="text"><b>Name</b></label>
-                    <input type="text" name="name" required=""  onChange = {onChangeName} />
+                    <input type="text"  name="name" required="true"  onChange = {onChangeName} />
                     
                     <label htmlFor="email"><b>Email</b></label>
-                    <input type="email" name="email" required=""  onChange = {onChangeEmail} />
+                    <input type="text" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" name="email" required=""  onChange = {onChangeEmail} />
 
                     <label htmlFor="text"><b>Password</b></label>
                     <input type="password" name="password" required="" onChange = {onChangePassword}/>

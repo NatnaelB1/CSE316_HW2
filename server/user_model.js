@@ -2,6 +2,11 @@ var mongoose  = require("mongoose");
 const bcrypt = require('bcrypt')
 var Schema = mongoose.Schema;
 
+// Check if it is a valid email address
+var validateEmail = function(email) {
+    return /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(email);
+} 
+
 var userSchema = new Schema(
     {
     username: {
@@ -11,6 +16,10 @@ var userSchema = new Schema(
     useremail: {
         type: String, 
         required: true, 
+        validate: {
+            validator: validateEmail,
+            message: props => `${props.value} is not a valid email!`
+        },
         trim: true,
         unique: true,
         maxlength: 100},

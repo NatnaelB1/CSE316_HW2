@@ -155,3 +155,13 @@ hr{
   display: flex;
   justify-content: space-between;
 }
+.emailbox{
+    width: 100%;
+    padding: 15px;
+    margin: 5px 0 5px 0;
+    display: inline-block;
+    background: #fff;
+    border-style: solid;
+    border-width: thin;
+    border-color: darkgray;
+}

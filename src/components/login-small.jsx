@@ -11,7 +11,7 @@ function SmallLoginWindow({loginpop , setLoginPop, onChangeEmail, onChangePasswo
             </div> 
             <div className='login_input2' >
         
-                <form action="action_page.php">
+                <form>
                 <div className="login_container">
                     
                     <label htmlFor="email"><b>Email</b></label>

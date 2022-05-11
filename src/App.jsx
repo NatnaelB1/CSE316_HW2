@@ -111,7 +111,7 @@ function App() {
   const handleProfileSubmit = e => {
     e.preventDefault();
     setButtonPopup(false);
-    console.log(user);
+    //console.log(user);
     axios.put('/edit/'+ activeuser, user)
       .then(res => console.log(res.data))
       .catch(e=> console.log(e))
@@ -123,12 +123,25 @@ function App() {
     axios.post('/register', user)
       .then(function (res){  
         console.log(res.data);
-        setErrorMessage(false);
+        console.log("should work");
+        setActiveUser(res.data.userId);
+        setUsername(res.data.username);
+        setUserEmail(res.data.useremail);
+        setUserColor(res.data.usercolor);
+        setUserPicture(res.data.userpicture);
+        
+        
+        setNoteDisplay(true);
+        setLoginDisplay(false);  
+        setButtonPopup(false);
         setLoginPop(false);
+        setErrorMessage(false);
+
         console.log("Successful signin");
+        
       
       }).catch((err)=>{
-        console.log("signin error Message");
+        console.log("signin error Message" + err);
         setErrorMessage(true);
       });
   }
@@ -153,11 +166,11 @@ function App() {
         setButtonPopup(false);
         axios.get('/notes').then(res => {
           setNotes(res.data)
-          console.log('Im here')
+          // console.log('Im here');
+          // console.log(notes[0]);
 
           notes[0]&&setActiveNote(notes[0].id);
-          console.log(notes[0].id+"#######")
-          setActiveUser(activeuser)
+          
         }  
         );   
   
@@ -229,16 +242,14 @@ const handleImageSelected = (event) => {
   ///////////////////////////////////////NOTES////////////////////////////////////////////////////////////////// 
 
 
-// //gets notes from the database
+//gets notes from the database
 // useEffect(()=>{
 //   axios.get('/notes').then(res => {
 //     //let n = notes.concat(res.data);
-//     setNotes(res.data)
-//   }  
-//   )
-  
-// },[])
-
+//     //setNotes(res.data)
+//     console.log(res.data[0].id)
+//     notes[0]&&setActiveNote(res.data[0].id);
+//   })},[activeuser])
 
 //adding a new note
 const onAddNote = () => {
@@ -268,7 +279,7 @@ const onAddNote = () => {
   //Finding the activenote for tags
   useEffect(() => {
      similarNotes();
-    enabletags && setTags(getActiveNote().note_tag);
+    activeNote && setTags(getActiveNote().note_tag);
   }, [activeNote]); 
   
   
@@ -332,7 +343,7 @@ const onAddNote = () => {
 
         }
         )
-        console.log(related_notes)
+        //console.log(related_notes)
       setRelatedNotes(related_notes);
       }
 
@@ -342,6 +353,7 @@ const onAddNote = () => {
             console.log(e)
     );
  }
+ 
 
    //////////////////////////////////////////////////////////////////////////////////////////////////////////////
    ///////////////////////////////////////TAGS///////////////////////////////////////////////////////////////////

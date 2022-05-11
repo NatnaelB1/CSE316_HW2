@@ -4,22 +4,26 @@ function SmallPopupWindow ({onChangeName, onChangeEmail, onChangeColor, userName
                             logindisplay, setLoginDisplay, notedisplay, setNoteDisplay, handleLogout, handleImageSelected,
                             handleDeleteImage})
 {
+    const handle_x = (e) => {
+        //setTrigger(false);
+        e.preventDefault();
+    };
     return(
         <div className="pop-up-small">
       
-              <form action="action_page.php">
+              <form>
               <div className="container">
                   
                   <div className="edit">
                       <div id="edit-profile-span">Edit profile</div>
-                      <div id="edit-profile-cancel"> <button className="popup-button" id="close-popup" > X </button> </div>
+                      <div id="edit-profile-cancel"> <button className="popup-button" id="close-popup" onClick={handle_x}> X </button> </div>
               
                   </div>
                   
                   
                   <div id="edit2">
                   <img className="profile-image" src="assets/pro.webp" alt="Profile-image" />
-                  <span><div className="popup-button"><label for="file-upload" className="custom-file-upload"> Add new image</label><input id="file-upload" type="file" onChange={handleImageSelected}/></div></span>
+                  <span><div className="popup-button"><label htmlFor="file-upload" className="custom-file-upload"> Add new image</label><input id="file-upload" type="file" onChange={handleImageSelected}/></div></span>
                   <span><div className="popup-button" onClick={handleDeleteImage}>remove image </div></span>
                   </div>
                   

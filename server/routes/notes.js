@@ -62,7 +62,7 @@ router.get('/notes/:id', isAgent, wrapAsync(async function (req, res, next) {
 
 router.put('/notes/:id', isAgent, wrapAsync(async function (req, res) {
     const id = req.params.id;
-    //console.log(id);
+    console.log("being edited = tagss");
     const {forsort, notebody, lastModified, note_tag} = req.body;
     console.log("PUT with id: " + id + ", body: " + JSON.stringify(req.body));
     // This below method automatically saves it to the database

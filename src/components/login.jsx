@@ -12,7 +12,7 @@ function LoginWindow({loginpop , setLoginPop, onChangeEmail, onChangePassword, h
             </div> 
             <div className='login_input' >
         
-                <form action="action_page.php">
+                <form>
                 <div className="login_container">
                     
                     <label htmlFor="email"><b>Email</b></label>
